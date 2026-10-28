@@ -682,8 +682,8 @@
           🎯 Center <span class="kbd-hint">C</span>
         </button>
 
-        <button class="tool-btn danger" id="btn-wipe-canvas" title="Reset Current Map (Preserves Permanent Presets)">
-          🔥 Wipe Canvas
+       <button class="tool-btn active" id="btn-toggle-minimap" title="Toggle 5×5 Territory Minimap">
+          🗺️ Minimap
         </button>
       </div>
     </header>
@@ -1880,7 +1880,18 @@
       }
     };
 
-    document.getElementById('btn-wipe-canvas').addEventListener('click', () => APP.wipeCanvas(false));
+    const toggleMinimapBtn = document.getElementById('btn-toggle-minimap');
+    if (toggleMinimapBtn) {
+      toggleMinimapBtn.addEventListener('click', () => {
+        const minimapCard = document.getElementById('minimap-card');
+        if (minimapCard) {
+          const isHidden = minimapCard.style.display === 'none';
+          minimapCard.style.display = isHidden ? 'block' : 'none';
+          toggleMinimapBtn.classList.toggle('active', isHidden);
+        }
+      });
+    }
+    
     APP.syncRealmSizeUI();
 
    // Keyboard Shortcuts & Smooth WASD Camera Panning
