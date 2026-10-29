@@ -1,7 +1,7 @@
 # Fabledom-Kingdom-Planner
 Lightweight PWA built to help players plan and optimize city layouts for Fabledom. Capable of importing all map terrain and resource deposits from a game-generated save-game file, planning/mapping all buildings and desirability effects, and saving full kingdom playthroughs and terrain maps. 
 
-Current version: 1.0.1
+Current version: 0.2.1
 
 Thanks for visiting! I hope you find the Fabledom Kingdom Planner useful. This is my first project, and I'm doing it entirely in my spare time, so I will work on it on weekends and days off. If you encounter bugs or have suggestions for improvement, I'd love to hear them, and I will attend to them when I'm able to do so. 
 
