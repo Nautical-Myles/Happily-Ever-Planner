@@ -112,27 +112,27 @@
     }
 
     /* Sidebar Tabs */
-    .sidebar-tabs {
-      display: grid;
-      grid-template-columns: repeat(3, 1fr);
-      background: #17120e;
-      border-bottom: 1px solid var(--border-gold);
-    }
+.sidebar-tabs {
+  display: grid;
+  grid-template-columns: repeat(4, 1fr);
+  background: #17120e;
+  border-bottom: 1px solid var(--border-gold);
+}
 
-    .tab-btn {
-      background: transparent;
-      border: none;
-      border-right: 1px solid var(--border-muted);
-      border-bottom: 3px solid transparent;
-      color: var(--text-muted);
-      padding: 10px 6px;
-      font-size: 12px;
-      font-weight: 600;
-      text-transform: uppercase;
-      letter-spacing: 0.5px;
-      cursor: pointer;
-      transition: all 0.15s ease;
-    }
+.tab-btn {
+  background: transparent;
+  border: none;
+  border-right: 1px solid var(--border-muted);
+  border-bottom: 3px solid transparent;
+  color: var(--text-muted);
+  padding: 10px 2px;
+  font-size: 11px;
+  font-weight: 600;
+  text-transform: uppercase;
+  letter-spacing: 0.5px;
+  cursor: pointer;
+  transition: all 0.15s ease;
+}
 
     .tab-btn:last-child {
       border-right: none;
@@ -583,10 +583,11 @@
       </div>
 
       <div class="sidebar-tabs">
-        <button class="tab-btn active" data-tab="terrain" id="tab-btn-terrain">Terrain</button>
-        <button class="tab-btn" data-tab="buildings" id="tab-btn-buildings">Buildings</button>
-        <button class="tab-btn" data-tab="presets" id="tab-btn-presets">Presets</button>
-      </div>
+    <button class="tab-btn active" data-tab="terrain" id="tab-btn-terrain">Terrain</button>
+    <button class="tab-btn" data-tab="buildings" id="tab-btn-buildings">Buildings</button>
+    <button class="tab-btn" data-tab="presets" id="tab-btn-presets">Presets</button>
+    <button class="tab-btn" data-tab="data" id="tab-btn-data">Data</button>
+  </div>
 
       <!-- Active Hub Banner for Phase 3 Parent-Child Builder -->
       <div id="active-hub-banner">
@@ -612,14 +613,22 @@
         </div>
 
         <!-- PRESETS PANEL (Populated in Phase 5) -->
-        <div class="tab-panel" id="panel-presets">
-          <div class="panel-placeholder">
-            <strong>Custom Stamp Presets &amp; Persistence</strong><br />
-            Ready for Phase 5 slot module installation.
-          </div>
-        </div>
+    <div class="tab-panel" id="panel-presets">
+      <div class="panel-placeholder">
+        <strong>Custom Stamp Presets</strong><br />
+        Ready for Phase 5 slot module installation.
       </div>
-    </aside>
+    </div>
+
+    <!-- DATA PANEL (Populated in Phase 5) -->
+    <div class="tab-panel" id="panel-data">
+      <div class="panel-placeholder">
+        <strong>Data Management &amp; Persistence</strong><br />
+        Ready for Phase 5 slot module installation.
+      </div>
+    </div>
+  </div>
+</aside>
 
     <!-- TOP TOOLBAR -->
     <header id="toolbar">
@@ -6424,17 +6433,17 @@ const bodyHtml = hasInfo
         return true;
       };
 
-// 5. Preset Sidebar UI (`#panel-presets`)
+// 5. Preset Sidebar UI (`#panel-presets`) & Data Management UI (`#panel-data`)
       function renderPresetsSidebar() {
         const panel = document.getElementById('panel-presets');
         if (!panel) return;
 
-        // Initialize expand/collapse state for Sections 2, 3, and 4
+        // Initialize expand/collapse state for Sections 2 and 3
         if (!APP.presetSectionsOpen) {
-          APP.presetSectionsOpen = { sec2: true, sec3: true, sec4: true };
+          APP.presetSectionsOpen = { sec2: true, sec3: true };
         }
 
-        // Inject layout styles once so Section 1 stays pinned and Sections 2–5 scroll together
+        // Inject layout styles once so Section 1 stays pinned and Sections 2 & 3 scroll together
         if (!document.getElementById('phase5-presets-layout-style')) {
           const st = document.createElement('style');
           st.id = 'phase5-presets-layout-style';
@@ -6508,7 +6517,7 @@ const bodyHtml = hasInfo
 
         const cap = APP.capturedStamp;
         const activeStampName = APP.activeStamp ? APP.activeStamp.name : null;
-        const { sec2, sec3, sec4 } = APP.presetSectionsOpen;
+        const { sec2, sec3 } = APP.presetSectionsOpen;
 
         const visibleBuiltins = APP.builtinPresets.filter(p => !APP.hiddenBuiltinIds.has(p.id));
         const hiddenCount = APP.builtinPresets.length - visibleBuiltins.length;
@@ -6527,7 +6536,7 @@ const bodyHtml = hasInfo
               </div>
             ` : ''}
 
-            <div class="panel-section-title" style="margin-top:0;">1. Capture Area as Building Stamp</div>
+            <div class="panel-section-title" style="margin-top:0;">Capture Area as Building Stamp</div>
             <div style="background:rgba(0,0,0,0.22); border:1px solid var(--border-muted); border-radius:6px; padding:10px;">
               <div style="display:flex; align-items:center; justify-content:space-between; margin-bottom:8px;">
                 <button class="tool-btn ${APP.activeTool.mode === 'select' && !APP.activeStamp ? 'active' : ''}" id="btn-activate-select" style="width:100%; justify-content:center;">
@@ -6560,7 +6569,7 @@ const bodyHtml = hasInfo
             </div>
           </div>
 
-          <!-- UNIFIED SCROLLABLE BODY: Sections 2 through 5 -->
+          <!-- UNIFIED SCROLLABLE BODY: Sections 2 & 3 -->
           <div id="presets-scroll-area">
             <!-- Section 2: Permanent Building Presets -->
             <div class="panel-section-title psec-header-row" data-toggle-psec="sec2" style="margin-top:0;">
@@ -6644,54 +6653,14 @@ const bodyHtml = hasInfo
                 </div>
               `).join('')}
             </div>
-
-         <!-- Section 4: Kingdom & Map Files -->
-            <div class="panel-section-title psec-header-row" data-toggle-psec="sec4">
-              <span>${sec4 ? '▾' : '▸'} Kingdom &amp; Map Files</span>
-              <button class="psec-toggle-btn" data-toggle-psec="sec4">${sec4 ? 'Collapse ▴' : 'Expand ▾'}</button>
-            </div>
-
-            <div style="display:${sec4 ? 'block' : 'none'}; background:rgba(0,0,0,0.22); border:1px solid var(--border-muted); border-radius:6px; padding:10px; margin-bottom:14px;">
-              <div style="font-size:11px; color:var(--text-muted); margin-bottom:8px; line-height:1.4;">
-                Save or load your kingdom or terrain layout via JSON save files.
-              </div>
-              <button class="tool-btn active" id="btn-export-kingdom-modal" style="width:100%; justify-content:center; font-size:12px; padding:7px; margin-bottom:8px;">
-                💾 Save Kingdom or Terrain
-              </button>
-              <div style="display: flex; gap: 6px;">
-                <button class="tool-btn" id="btn-load-full-kingdom" style="flex: 1; justify-content:center; font-size:11.5px;" title="Load a complete kingdom save (buildings + terrain)">📂 Load Saved Kingdom</button>
-                <button class="tool-btn" id="btn-load-map-only" style="flex: 1; justify-content:center; font-size:11.5px;" title="Extract only the terrain layer from a save file">🗺️ Load Saved Map</button>
-              </div>
-            </div>
-
-            <!-- Fabledom Terrain Importer -->
-            <div class="panel-section-title" style="margin-top: 18px;">Fabledom Terrain Importer</div>
-            <div style="font-size: 10.5px; color: var(--text-muted); line-height: 1.4; margin-bottom: 8px; padding: 0 4px;">
-              Load a native Fabledom <strong>.savegame</strong> file to auto-populate terrain and deposits.
-            </div>
-            <button class="tool-btn active" id="btn-import-fabledom-save" style="width: 100%; justify-content: center; margin-bottom: 14px; padding: 7px;">
-              ⛰️ Import Fabledom Save File
-            </button>
-
-            <!-- Reset Options -->
-            <div class="panel-section-title" style="margin-top: 10px;">Reset Options</div>
-            <div style="display: flex; flex-direction:column; gap: 6px;">
-              <button class="tool-btn danger" id="btn-sidebar-wipe-buildings" style="width:100%; justify-content:center; font-size:11.5px;">
-                🧹 Wipe Buildings (Keep Terrain)
-              </button>
-              <button class="tool-btn danger" id="btn-sidebar-wipe-canvas" style="width:100%; justify-content:center; font-size:11.5px;">
-                🔥 Wipe Canvas (Keep Perm Presets)
-              </button>
-            </div>
           </div>
-        </div>
-      `;
+        `;
 
         // Restore scroll position on the unified scroll area
         const nextScrollEl = panel.querySelector('#presets-scroll-area');
         if (nextScrollEl) nextScrollEl.scrollTop = savedScrollTop;
 
-        // Bind Expand/Collapse toggles for Sections 2, 3, and 4
+        // Bind Expand/Collapse toggles for Sections 2 and 3
         panel.querySelectorAll('.psec-header-row').forEach(row => {
           row.addEventListener('click', (e) => {
             if (e.target.closest('#btn-restore-builtins')) return;
@@ -6864,14 +6833,6 @@ const bodyHtml = hasInfo
           });
         });
 
-       // Bind Export Kingdom Modal Button
-        const btnExportModal = panel.querySelector('#btn-export-kingdom-modal');
-        if (btnExportModal) {
-          btnExportModal.addEventListener('click', () => {
-            APP.openSaveExportModal();
-          });
-        }
-
         // Bind Permanent Presets Backup/Import Buttons
         const btnBackupPresets = panel.querySelector('#btn-backup-presets');
         if (btnBackupPresets) {
@@ -6926,6 +6887,60 @@ const bodyHtml = hasInfo
               reader.readAsText(file);
             };
             input.click();
+          });
+        }
+      }
+
+      function renderDataSidebar() {
+        const panel = document.getElementById('panel-data');
+        if (!panel) return;
+
+        panel.innerHTML = `
+          <!-- Kingdom & Map Files -->
+          <div style="display:flex; justify-content:space-between; align-items:center; margin-bottom:4px;">
+            <div class="panel-section-title" style="margin:0;">Kingdom &amp; Map Files</div>
+            <span id="autosave-indicator" style="font-size:10px; color:var(--text-muted);"></span>
+          </div>
+
+          <div style="background:rgba(0,0,0,0.22); border:1px solid var(--border-muted); border-radius:6px; padding:10px; margin-bottom:14px;">
+            <div style="font-size:11px; color:var(--text-muted); margin-bottom:8px; line-height:1.4;">
+              Save or load your kingdom or terrain layout via JSON save files.
+            </div>
+            <button class="tool-btn active" id="btn-export-kingdom-modal" style="width:100%; justify-content:center; font-size:12px; padding:7px; margin-bottom:8px;">
+              💾 Save Kingdom or Terrain
+            </button>
+            <div style="display:flex; gap:6px;">
+              <button class="tool-btn" id="btn-load-full-kingdom" style="flex:1; justify-content:center; font-size:11.5px;" title="Load a complete kingdom save (buildings + terrain)">📂 Load Saved Kingdom</button>
+              <button class="tool-btn" id="btn-load-map-only" style="flex:1; justify-content:center; font-size:11.5px;" title="Extract only the terrain layer from a save file">🗺️ Load Saved Map</button>
+            </div>
+          </div>
+
+          <!-- Fabledom Terrain Importer -->
+          <div class="panel-section-title" style="margin-top:14px;">Fabledom Terrain Importer</div>
+          <div style="font-size:10.5px; color:var(--text-muted); line-height:1.4; margin-bottom:8px; padding:0 4px;">
+            Load a native Fabledom <strong>.savegame</strong> file to auto-populate terrain and deposits.
+          </div>
+          <button class="tool-btn active" id="btn-import-fabledom-save" style="width:100%; justify-content:center; margin-bottom:14px; padding:7px;">
+            ⛰️ Import Fabledom Save File
+          </button>
+
+          <!-- Reset Options -->
+          <div class="panel-section-title" style="margin-top:10px;">Reset Options</div>
+          <div style="display:flex; flex-direction:column; gap:6px;">
+            <button class="tool-btn danger" id="btn-sidebar-wipe-buildings" style="width:100%; justify-content:center; font-size:11.5px;">
+              🧹 Wipe Buildings (Keep Terrain)
+            </button>
+            <button class="tool-btn danger" id="btn-sidebar-wipe-canvas" style="width:100%; justify-content:center; font-size:11.5px;">
+              🔥 Wipe Canvas (Keep Perm Presets)
+            </button>
+          </div>
+        `;
+
+        // Bind Export Kingdom Modal Button
+        const btnExportModal = panel.querySelector('#btn-export-kingdom-modal');
+        if (btnExportModal) {
+          btnExportModal.addEventListener('click', () => {
+            APP.openSaveExportModal();
           });
         }
 
@@ -7173,6 +7188,7 @@ const bodyHtml = hasInfo
       loadHiddenBuiltins();
       APP.loadMapFromLocalStorage();
       renderPresetsSidebar();
+      renderDataSidebar();
 // =========================================================================
       // FABLEDOM SAVE PARSER & JSON IMPORT/EXPORT LOGIC
       // =========================================================================

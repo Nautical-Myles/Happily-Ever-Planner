@@ -1,4 +1,4 @@
-const CACHE_NAME = 'fabledom-planner-v1.0.1'; // <-- Increment this (v2, v3, etc.) on every update
+const CACHE_NAME = 'fabledom-planner-v0.2.1'; // <-- Increment this (v2, v3, etc.) on every update
 
 const ASSETS_TO_CACHE = [
   './',
