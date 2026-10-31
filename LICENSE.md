@@ -1,4 +1,4 @@
-#Business Source License 1.1
+# Business Source License 1.1
 
 License text copyright © 2024 MariaDB plc, All Rights Reserved. 
 “Business Source License” is a trademark of MariaDB plc.
@@ -13,7 +13,7 @@ Change Date: 1 January 2028
 
 Change License: GNU Affero General Public License v3.0 (AGPLv3)
 
-#Terms
+# Terms
 The Licensor hereby grants you the right to copy, modify, create derivative works, redistribute, and make non-production use of the Licensed Work. The Licensor may make an Additional Use Grant, above, permitting limited production use.
 
 Effective on the Change Date, or the fourth anniversary of the first publicly available distribution of a specific version of the Licensed Work under this License, whichever comes first, the Licensor hereby grants you rights under the terms of the Change Licensek, and the rights granted in the paragraph above terminate.
