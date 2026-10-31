@@ -5,7 +5,7 @@ License text copyright © 2024 MariaDB plc, All Rights Reserved.
 
 **Licensor:** Nautical-Myles
 
-**Licensed Work:** The "Licensed Work" (operating under the title "Fabledom Kingdom Planner") encompasses all original materials contained within this software repository. This includes, but is not limited to, all frontend source code (HTML, CSS, JavaScript) and background processing scripts (Web Workers); the logic, algorithms, and mathematical models used to parse save files, generate map canvases, restrict placement, and calculate desirability radiuses; all original user interface (UI) designs, user experience (UX) layouts, and custom graphical assets or icons created by the Licensor.
+**Licensed Work:** The "Licensed Work" (operating under the title "Happily Ever Planner: an Unofficial Companion for Fabledom") encompasses all original materials contained within this software repository. This includes, but is not limited to, all frontend source code (HTML, CSS, JavaScript) and background processing scripts (Web Workers); the logic, algorithms, and mathematical models used to parse save files, generate map canvases, restrict placement, and calculate desirability radiuses; all original user interface (UI) designs, user experience (UX) layouts, and custom graphical assets or icons created by the Licensor.
 
 ## Additional Use Grant:
 
