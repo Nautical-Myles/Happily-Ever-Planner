@@ -17,7 +17,6 @@ Because this runs entirely in your browser, the app cannot automatically scrape 
 There are also in-app instructions to help you find the folder when you click on the "Import Save File" button.
 
 ## Install to Desktop
-
 Because this is a Progressive Web App (PWA), you can install it directly to your computer like a native program. It will give you a desktop shortcut, an icon in your app tray, and it will run in its own clean window without the browser search bar and navigation buttons. **Moreover, it stores a local cache of its core files so it can run completely offline, with no internet connection.** It's still using your browser to run, and it's still completely sandboxed, without any access to your files besides what you explicitly give it if/when you point it to your SaveData folder or a preferred location to store your backups and saved realms.
 
 **To install on Chrome/Edge:**
@@ -45,4 +44,4 @@ This app is 100% free, and there are no paywalled features, subscription tiers, 
 
 If you find this tool helpful and want to say thank you for the work that went into it, you can drop a few dollars in the tip jar below. It is completely voluntary, and tips carry no obligation for future feature development.
 
-<script type='text/javascript' src='https://storage.ko-fi.com/cdn/widget/Widget_2.js'></script><script type='text/javascript'>kofiwidget2.init('Buy Me a Coffee on Ko-fi', '#72a4f2', 'M3R629TIM2');kofiwidget2.draw();</script> 
+<a href='https://ko-fi.com/M3R629TIM2' target='_blank'><img height='36' style='border:0px;height:36px;' src='https://storage.ko-fi.com/cdn/kofi5.png?v=6' border='0' alt='Buy Me a Coffee at ko-fi.com' /></a>
