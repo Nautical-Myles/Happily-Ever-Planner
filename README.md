@@ -2,7 +2,7 @@
 
 Lightweight PWA built to help players plan and optimize city layouts for Fabledom. Capable of importing all map terrain and resource deposits from a game-generated save-game file, planning/mapping all buildings and desirability effects, and saving full kingdom playthroughs and terrain maps. 
 
-*Current version: 0.2.2*
+*Current version: 0.2.5*
 
 Thank you for taking the time to visit the page and give this project a try. I genuinely appreciate your interest, and I hope this tool helps you plan your kingdom just as much as it has helped me!
 
@@ -43,7 +43,7 @@ The full license and its Additional Use Grant are available [here](LICENSE.md). 
 ## A Note on AI Assistance
 Full disclosure up front: I built this app with the help of AI. As a longtime member of the gaming community, I share the community's concerns about the use of AI by large companies to replace the disciplined, creative efforts of talented writers, artists, and voice actors with lazy, poor quality shortcuts just to save a few dollars. 
 
-The Happily Ever Planner doesn't have any of that. There's no plot to write, no audio to voice, and the only original artwork is the desktop shortcut, which is my own. I’m just a 40-year-old gamer dad with no coding experience who wanted a way to blueprint my Fabledom kingdom and test out layouts before committing to them in the game. Figuring out how to build that in my spare time was an impossible stretch, so I leaned heavily on AI tools like Gemini to bridge my coding gaps and act as my tutor. With that massive assist, I managed to build the exact planning tool I wished existed. Now that it gets the job done for my own realm, I'm happy to share it with anyone else looking for the same thing, and I hope you find it as useful as I have!
+The Happily Ever Planner doesn't have any of that. There's no plot to write, no audio to voice, and the only artist on the project is me. I’m just a 40-year-old gamer dad with no coding experience who wanted a way to blueprint my Fabledom kingdom and test out layouts before committing to them in the game. Figuring out how to build that in my spare time was an impossible stretch, so I leaned heavily on AI tools like Gemini to bridge my coding gaps and act as my tutor. With that massive assist, I managed to build the exact planning tool I wished existed. Now that it gets the job done for my own realm, I'm happy to share it with anyone else looking for the same thing, and I hope you find it as useful as I have!
 
 ## Support the Project 
 This app is 100% free, and there are no paywalled features, subscription tiers, or future milestone goals. I am doing this entirely in my spare time, so I will try to get to updates and bug fixes when time permits.
