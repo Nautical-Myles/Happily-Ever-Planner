@@ -18,7 +18,7 @@ Because this runs entirely in your browser, the app cannot automatically scrape 
 **How to find your Fabledom saves on Windows:**
 1. Open File Explorer.
 2. Navigate to: C:\Users\ [Your Username] \AppData\LocalLow\Grenaa Games\Fabledom\Saves
-3. If you can't see the AppData folder, click "View" at the top of File Explorer and check "Hidden items".
+3. The AppData folder is hidden by default. If you can't see it, click "View" at the top of File Explorer and check "Hidden items" to enable viewing it. 
 
 There are also in-app instructions to help you find the folder when you click on the "Import Save File" button.
 
