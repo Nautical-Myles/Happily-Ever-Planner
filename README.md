@@ -7,10 +7,10 @@ Lightweight PWA built to help players plan and optimize city layouts for Fabledo
 Thank you for taking the time to visit the page and give this project a try. I genuinely appreciate your interest, and I hope this tool helps you plan your kingdom just as much as it has helped me!
 
 ## Screenshots (Click to Expand)
-<img width="400" height="225" alt="Splash" src="https://github.com/user-attachments/assets/b76bc32f-4c88-479b-a785-75d0016db75e" />
-<img width="400" height="225" alt="Real Melodia" src="https://github.com/user-attachments/assets/7f1740d5-8de3-441d-9f7e-7ab5ddb42549" />
-<img width="400" height="225" alt="Melodia Zoom" src="https://github.com/user-attachments/assets/37b076a2-778d-4c0a-9a65-39358b7cdc67" />
-<img width="400" height="225" alt="Map and Terrain Bar" src="https://github.com/user-attachments/assets/b8e011f8-319c-4606-8243-cadd7ff5e202" />
+<img width="30%" height="30%" alt="Splash" src="https://github.com/user-attachments/assets/40bbea32-207b-4c0a-8751-356ee34fbd7c" />
+<img width="30%" height="30%" alt="Map and Terrain Bar" src="https://github.com/user-attachments/assets/a80f5edb-a3ba-496e-a29d-02c7fd27f3c8" />
+<img width="30%" height="30%" alt="Melodia Zoom" src="https://github.com/user-attachments/assets/c5970e10-4ef2-4aa0-85d5-46a68fe38921" />
+<img width="30%" height="30%" alt="Real Melodia" src="https://github.com/user-attachments/assets/d8eb2b42-3429-47f0-99b3-75c3f01432db" />
 
 ## Getting Started: Importing A Terrain Map from the Game
 Because this runs entirely in your browser, the app cannot automatically scrape your computer for save files. You'll need to locate your Fabledom .SAVEGAME folder and upload the file manually.
