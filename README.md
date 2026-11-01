@@ -32,7 +32,7 @@ However, hosting a live web clone of this project is restricted during this init
 
 On January 1, 2028, this code will automatically unlock into the open-source GNU Affero General Public License v3.0 (AGPLv3), granting full hosting freedoms.
 
-The full license and its Additional Use Grant are available [here](LICENSE.md). See the [Legal Notice & Disclaimers](LEGAL_NOTICE_&_DISCLAIMER.md) for other legal stuff.
+The full license and its Additional Use Grant are available [here](LICENSE.md). See the [Legal Notice & Disclaimers](LEGAL&DISCLAIMER.md) for other legal stuff.
 
 ## A Note on AI Assistance
 Full disclosure up front: I built this app with the help of AI. As a longtime member of the gaming community, I share the community's concerns about the use of AI by large companies to replace the disciplined, creative efforts of talented writers, artists, and voice actors with lazy, poor quality shortcuts just to save a few dollars. 
