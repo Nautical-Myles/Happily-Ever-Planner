@@ -4,7 +4,8 @@
  Change Date: 1 January 2028
  On the date above, in accordance with the Business Source License, use of this software will be governed by the open source license specified in the LICENSE.md file.
 */
-    
+
+// Version 0.2.5
     
     // =========================================================================
     // PHASE 1: CORE ENGINE, SHARED GLOBAL STATE (window.APP) & TERRITORY MAP
@@ -83,11 +84,11 @@
       shoal:       '#3d8ca8',
       hill:        '#5c5248',
       tree:        '#2d4c22',
-      small_stone: '#8c8c8c',
-      large_stone: '#707070',
+      small_stone: '#a0a0a0',
+      large_stone: '#5c5c5c',
       iron:        '#8c533e',
       mystic:      '#7d4294',
-      encounter: '#2b5078',
+      encounter:   '#2b5078',
       ruin:        '#9c8754'
     };
 
@@ -417,7 +418,7 @@
         }
       }
 
-      // Draw crisp 19x19 territory boundary lines
+      // Draw crisp territory boundary lines
       ctx.save();
       ctx.strokeStyle = 'rgba(222, 179, 98, 0.65)';
       ctx.lineWidth = 2 / APP.camera.zoom;
@@ -433,69 +434,65 @@
       ctx.stroke();
       ctx.setLineDash([]);
 
-      // Highlight active territory outer borders in warm gold
-      ctx.strokeStyle = '#f0c265';
-      ctx.lineWidth = 2.5 / APP.camera.zoom;
-      for (let ty = 0; ty < 5; ty++) {
-        for (let tx = 0; tx < 5; tx++) {
-          if (APP.territories[ty][tx]) {
-            ctx.strokeRect(tx * terrPx, ty * terrPx, terrPx, terrPx);
-            // Corner label for active territory
-            ctx.fillStyle = 'rgba(24, 18, 12, 0.75)';
-            ctx.fillRect(tx * terrPx + 6, ty * terrPx + 6, 108, 20);
-            ctx.fillStyle = '#f0c265';
-            ctx.font = 'bold 11px Georgia, serif';
-            ctx.textAlign = 'left';
-            ctx.textBaseline = 'middle';
-            ctx.fillText(`✦ Territory (${ty + 1}, ${tx + 1})`, tx * terrPx + 12, ty * terrPx + 16);
-          }
-        }
-      }
-
       // Outer Kingdom Map Border
       ctx.strokeStyle = '#cfa358';
       ctx.lineWidth = 4 / APP.camera.zoom;
       ctx.strokeRect(0, 0, totalPx, totalPx);
       ctx.restore();
 
- // Define the clean territory fog and borders
+      // Define the clean territory fog and borders
       APP.onDrawParchmentFogAndBorders = function (ctx) {
         const S = APP.TILE_PX;
-        
+        const T = APP.TERR_SIZE;
+        const terrPx = T * S;
+
         // Draw solid translucent fog over unbought territories (No hatching)
         ctx.fillStyle = 'rgba(20, 16, 12, 0.65)';
         for (let ty = 0; ty < 5; ty++) {
           for (let tx = 0; tx < 5; tx++) {
             if (!APP.territories[ty][tx]) {
-              const px = tx * APP.TERR_SIZE * S;
-              const py = ty * APP.TERR_SIZE * S;
-              const sz = APP.TERR_SIZE * S;
-              ctx.fillRect(px, py, sz, sz);
+              const px = tx * terrPx;
+              const py = ty * terrPx;
+              ctx.fillRect(px, py, terrPx, terrPx);
             }
           }
         }
 
-        // Draw crisp gold borders around Active territories
+        // Draw warm gold border ONLY along outermost perimeter of contiguous active territories
+        ctx.save();
+        ctx.strokeStyle = '#f0c265';
         ctx.lineWidth = 2.5 / APP.camera.zoom;
+        ctx.beginPath();
         for (let ty = 0; ty < 5; ty++) {
           for (let tx = 0; tx < 5; tx++) {
-            if (APP.territories[ty][tx]) {
-              const px = tx * APP.TERR_SIZE * S;
-              const py = ty * APP.TERR_SIZE * S;
-              const sz = APP.TERR_SIZE * S;
-              
-              ctx.save();
-              ctx.strokeStyle = 'rgba(217, 167, 74, 0.85)';
-              ctx.strokeRect(px, py, sz, sz);
-              
-              // Inner subtle glow
-              ctx.strokeStyle = 'rgba(217, 167, 74, 0.25)';
-              ctx.lineWidth = 6 / APP.camera.zoom;
-              ctx.strokeRect(px + 2, py + 2, sz - 4, sz - 4);
-              ctx.restore();
+            if (!APP.territories[ty][tx]) continue;
+            const px = tx * terrPx;
+            const py = ty * terrPx;
+
+            // North edge: draw only if on outer map boundary or North neighbor is unbought
+            if (ty === 0 || !APP.territories[ty - 1][tx]) {
+              ctx.moveTo(px, py);
+              ctx.lineTo(px + terrPx, py);
+            }
+            // South edge: draw only if on outer map boundary or South neighbor is unbought
+            if (ty === 4 || !APP.territories[ty + 1][tx]) {
+              ctx.moveTo(px, py + terrPx);
+              ctx.lineTo(px + terrPx, py + terrPx);
+            }
+            // West edge: draw only if on outer map boundary or West neighbor is unbought
+            if (tx === 0 || !APP.territories[ty][tx - 1]) {
+              ctx.moveTo(px, py);
+              ctx.lineTo(px, py + terrPx);
+            }
+            // East edge: draw only if on outer map boundary or East neighbor is unbought
+            if (tx === 4 || !APP.territories[ty][tx + 1]) {
+              ctx.moveTo(px + terrPx, py);
+              ctx.lineTo(px + terrPx, py + terrPx);
             }
           }
         }
+        ctx.stroke();
+        ctx.restore();
       };
 
       // Execute it
@@ -503,7 +500,6 @@
         APP.onDrawParchmentFogAndBorders(ctx);
       }
     }
-
     // 5. Hovered Tile Cursor, Selection Box & Placement Ghost
     function drawSelectionAndGhost(ctx) {
       if (typeof APP.onDrawSelectionAndGhost === 'function') {
@@ -1378,7 +1374,7 @@
         large_stone: {
           id: 'large_stone', name: 'Large Stone (2×2)', category: 'deposit',
           w: 2, h: 2, isDeposit: true, rotatable: false,
-          color: APP.TERRAIN_COLORS.large_stone, icon: '⛏️',
+          color: APP.TERRAIN_COLORS.large_stone, icon: '🪨',
           anchorNote: 'Anchor for: Stone Quarry',
           desc: '2×2 deep stone quarry deposit.'
         },
@@ -1809,9 +1805,10 @@
             ctx.textBaseline = 'middle';
             ctx.fillText(def.icon, px + pw / 2, py + ph / 2 - 4);
 
-            ctx.font = 'bold 9.5px "Segoe UI", sans-serif';
+            const label = def.short || def.name.replace(/\s*\(\d+[×x]\d+\)/g, '').trim();
+            ctx.font = 'bold 9px "Segoe UI", sans-serif';
             ctx.fillStyle = '#ffdfa0';
-            ctx.fillText(`${dep.w}×${dep.h}`, px + pw / 2, py + ph - 8);
+            ctx.fillText(label, px + pw / 2, py + ph - 8, pw - 8);
           }
           ctx.restore();
         }
@@ -2257,7 +2254,7 @@
         granary: {
           id: 'granary', name: 'Granary', short: 'Granary', category: 'food_production', milestone: 'Hamlet',
           w: 2, h: 1, rotatable: true, hasDoor: true,
-          color: '#ad8549', roofColor: '#826130', icon: '🏺',
+          color: '#ad8549', roofColor: '#826130', icon: '🌽',
           desc: '2×1 Food Granary. Stores harvested crops, grain, flour, and processed foods.'
         },
         fisherman_hut: {
@@ -2275,7 +2272,7 @@
         },
         bakery: {
           id: 'bakery', name: 'Bakery', short: 'Bakery', category: 'food_production', milestone: 'Big Village',
-          w: 3, h: 2, rotatable: true, hasDoor: true,
+          w: 3, h: 2, rotatable: true, hasDoor: true, doorSide: 'W',
           desirabilityEmit: 5, desirabilityRadius: 7,
           color: '#b36d3e', roofColor: '#cc8250', icon: '🥖',
           desc: '3×2 Bread Bakery (6 squares). Bakes Flour into Bread and emits +5 Desirability within 7 tiles.'
@@ -2305,7 +2302,7 @@
           id: 'vine_field', name: 'Grape Field', short: 'GrapeFld', category: 'food_production', milestone: 'Small City',
           w: 1, h: 1, rotatable: false, hasDoor: false, isChild: true, parentHubType: 'vineyard',
           isFoundation: true, countsAsFoundation: true, dragPaintChild: true,
-          color: '#5c3b66', icon: '🍷',
+          color: '#5c3b66', icon: '▤',
           desc: '1×1 Grapevine Field tile for active Grape Farm (up to 40 tiles).'
         },
         juicery: {
@@ -2378,7 +2375,7 @@
         },
         arena_of_trials: {
           id: 'arena_of_trials', name: 'Arena of Trials', short: 'Arena', category: 'military', milestone: 'Big Village',
-          w: 3, h: 3, rotatable: true, hasDoor: true,
+          w: 3, h: 4, rotatable: true, hasDoor: true,
           color: '#824638', roofColor: '#a35847', icon: '⚔️',
           desc: '3×3 Arena of Trials for hero and combat challenges.'
         },
@@ -2592,7 +2589,7 @@
           id: 'stone_camp', name: 'Stone Camp', short: 'StoneCamp', category: 'resource_production', milestone: 'Hamlet',
           w: 3, h: 2, rotatable: true, hasDoor: true,
           requiresDeposit: 'small_stone', minDepositOverlap: 4, desirabilityEmit: -5, desirabilityRadius: 4,
-          color: '#7a7d80', roofColor: '#57595c', icon: '🪨',
+          color: '#7a7d80', roofColor: '#57595c', icon: '⛏️',
           desc: '3×2 Stone Camp. Covers a 2×2 Small Stone deposit (4 tiles) + 2×1 strip. Desirability: -5 (4 tiles).'
         },
         coal_maker: {
@@ -2613,7 +2610,7 @@
           id: 'stone_quarry', name: 'Stone Quarry', short: 'Quarry', category: 'resource_production', milestone: 'Village',
           w: 4, h: 2, rotatable: true, hasDoor: true,
           requiresDeposit: 'large_stone', minDepositOverlap: 4, desirabilityEmit: -10, desirabilityRadius: 5,
-          color: '#63676b', roofColor: '#45484b', icon: '⛏️',
+          color: '#63676b', roofColor: '#45484b', icon: '⚒️',
           desc: '4×2 Deep Stone Quarry. Covers a 2×2 Large Stone deposit (4 tiles) + 2×2 strip. Desirability: -10 (5 tiles).'
         },
         brickworks: {
@@ -2627,7 +2624,7 @@
           id: 'iron_mine', name: 'Iron Quarry', short: 'IronQry', category: 'resource_production', milestone: 'Small Town',
           w: 3, h: 2, rotatable: true, hasDoor: true,
           requiresDeposit: 'iron', minDepositOverlap: 4, desirabilityEmit: -10, desirabilityRadius: 6,
-          color: '#785240', roofColor: '#52372b', icon: '⛓️',
+          color: '#785240', roofColor: '#52372b', icon: '⛏️',
           desc: '3×2 Iron Quarry. Covers a 2×2 Iron Deposit (4 tiles) + 2×1 strip. Emits -10 Desirability (6 tiles).'
         },
         blacksmith: {
@@ -2696,7 +2693,7 @@
         homestead:   { maxFoundation: 5,  maxAttachments: 2 },
         condo:       { minFoundation: 9,  maxFoundation: 30, maxHouses: 12, maxShops: 4, maxArches: 5 },
         veg_farm:    { maxFoundation: 40 },
-        wheat_farm:  { maxFoundation: 60 },
+        grain_farm:  { maxFoundation: 60 },
         vineyard:    { maxFoundation: 40 },
         stockpile:   { maxFoundation: 3 },
         palace:      { maxFoundation: 40, maxAttachments: 8 },
@@ -2717,16 +2714,18 @@
         return (r === 90 || r === 270) ? { w: def.h, h: def.w } : { w: def.w, h: def.h };
       };
 
-  APP.getDoorSide = function (rot = 0) {
+  APP.getDoorSide = function (rot = 0, baseSide = 'S') {
+        const dirs = ['N', 'E', 'S', 'W'];
+        const baseIdx = dirs.indexOf(baseSide) !== -1 ? dirs.indexOf(baseSide) : 2;
         const r = ((rot % 360) + 360) % 360;
-        if (r === 90) return 'W';
-        if (r === 180) return 'N';
-        if (r === 270) return 'E';
-        return 'S';
+        const steps = Math.floor(r / 90);
+        return dirs[(baseIdx + steps) % 4];
       };
 
       APP.getDoorTile = function (b) {
-        const side = APP.getDoorSide(b.rot || 0);
+        const def = APP.BUILDING_DEFS[b.defId];
+        const baseSide = def ? (def.door || def.doorSide || 'S') : 'S';
+        const side = APP.getDoorSide(b.rot || 0, baseSide);
         let dx = 0, dy = 0;
         let chkX = b.x, chkY = b.y;
         if (side === 'N') { dy = -1; chkX += Math.floor(b.w / 2); }
@@ -2768,13 +2767,17 @@
         for (const b of APP.buildings.values()) {
           const def = APP.BUILDING_DEFS[b.defId];
           if (def && def.isHub && def.hubType === childDef.parentHubType) {
-            if (rectsTouchOrthogonally(tx, ty, w, h, b.x, b.y, b.w, b.h)) {
+            const overlapsHub = (tx < b.x + b.w && tx + w > b.x && ty < b.y + b.h && ty + h > b.y);
+            if (overlapsHub || rectsTouchOrthogonally(tx, ty, w, h, b.x, b.y, b.w, b.h)) {
               return b;
             }
             for (const cid of (b.childrenIds || [])) {
               const child = APP.buildings.get(cid);
-              if (child && rectsTouchOrthogonally(tx, ty, w, h, child.x, child.y, child.w, child.h)) {
-                return b;
+              if (child) {
+                const overlapsChild = (tx < child.x + child.w && tx + w > child.x && ty < child.y + child.h && ty + h > child.y);
+                if (overlapsChild || rectsTouchOrthogonally(tx, ty, w, h, child.x, child.y, child.w, child.h)) {
+                  return b;
+                }
               }
             }
           }
@@ -2811,7 +2814,7 @@
           const cDef = APP.BUILDING_DEFS[c.defId];
           if (!cDef) continue;
           if (cDef.isFoundation) foundationCount += (c.w * c.h);
-          else if (hubDef?.hubType === 'condo' && cDef.countsAsFoundation) foundationCount += (c.w * c.h);
+          else if (hubDef?.hubType === 'condo' && cDef.countsAsFoundation && !c.stackedOnId) foundationCount += (c.w * c.h);
           if (cDef.isAttachment) attachmentCount++;
           if (c.defId === 'town_house') houseCount++;
           if (c.defId === 'condo_shop') shopCount++;
@@ -3039,6 +3042,8 @@
         const { w, h } = APP.getRotatedDims(defId, rot);
         let parentHub = null;
 
+        let stackedOnId = null;
+
         if (def.isChild) {
           parentHub = APP.resolveParentHubForChild(defId, tx, ty);
           if (!parentHub) return null;
@@ -3046,14 +3051,16 @@
           const existingId = APP.buildingGrid[ty][tx];
           if (existingId !== null && APP.buildings.has(existingId)) {
             const existingB = APP.buildings.get(existingId);
+            const isCondoSubUnit = def.parentHubType === 'condo' && !def.isFoundation;
+            const isHomesteadAddon = def.parentHubType === 'homestead' && def.isAttachment;
             if (
-              (def.parentHubType === 'condo' && !def.isFoundation && existingB.defId === 'condo_foundation') ||
-              (def.parentHubType === 'homestead' && def.isAttachment && existingB.defId === 'homestead_yard')
+              (isCondoSubUnit && existingB.defId === 'condo_foundation') ||
+              (isHomesteadAddon && existingB.defId === 'homestead_yard')
             ) {
               if (existingB.parentId && APP.buildings.has(existingB.parentId)) {
                 parentHub = APP.buildings.get(existingB.parentId);
               }
-              APP.deleteBuildingById(existingId, false);
+              stackedOnId = existingId;
             }
           }
         }
@@ -3069,7 +3076,8 @@
           rot: def.rotatable ? ((rot % 360) + 360) % 360 : 0,
           parentId: parentHub ? parentHub.id : null,
           childrenIds: [],
-          warnings: []
+          warnings: [],
+          stackedOnId
         };
 
         APP.buildings.set(id, building);
@@ -3134,7 +3142,7 @@
             const cx = b.x + dx;
             const cy = b.y + dy;
             if (APP.inBounds(cx, cy) && APP.buildingGrid[cy][cx] === bId) {
-              APP.buildingGrid[cy][cx] = null;
+              APP.buildingGrid[cy][cx] = (b.stackedOnId && APP.buildings.has(b.stackedOnId)) ? b.stackedOnId : null;
             }
           }
         }
@@ -3182,6 +3190,31 @@
         return false;
       }
 
+      function getMovedLayer2Layout(tx, ty) {
+        if (!APP.movingLayer2) return null;
+        const m = APP.movingLayer2;
+        const currentRot = APP.activeTool.rot;
+
+        return m.items.map(item => {
+          const b = item.b;
+          const def = APP.BUILDING_DEFS[b.defId];
+          const canRotate = def ? def.rotatable : false;
+
+          const nrot = canRotate ? currentRot : item.origRot;
+          const dims = canRotate ? APP.getRotatedDims(b.defId, nrot) : { w: item.origW, h: item.origH };
+
+          return {
+            b,
+            def,
+            x: tx + item.dx,
+            y: ty + item.dy,
+            w: dims.w,
+            h: dims.h,
+            rot: nrot
+          };
+        });
+      }
+
       function pickupLayer2At(tx, ty, moveSingleElement = false) {
         if (!APP.inBounds(tx, ty)) return false;
         const bId = APP.buildingGrid[ty][tx];
@@ -3191,25 +3224,24 @@
         const root = getRootHub(clicked);
         const moveComplex = !moveSingleElement && root && (APP.BUILDING_DEFS[root.defId]?.isHub);
 
+        const allParts = moveComplex
+          ? [root, ...(root.childrenIds || []).map(id => APP.buildings.get(id)).filter(Boolean)]
+          : [clicked];
+
         const items = [];
         const ignoreIds = new Set();
 
-        if (moveComplex) {
-          const allParts = [root, ...(root.childrenIds || []).map(id => APP.buildings.get(id)).filter(Boolean)];
-          for (const part of allParts) {
-            ignoreIds.add(part.id);
-            items.push({
-              b: part,
-              dx: part.x - tx,
-              dy: part.y - ty
-            });
-          }
-        } else {
-          ignoreIds.add(clicked.id);
+        for (const part of allParts) {
+          ignoreIds.add(part.id);
           items.push({
-            b: clicked,
-            dx: clicked.x - tx,
-            dy: clicked.y - ty
+            b: part,
+            origX: part.x,
+            origY: part.y,
+            origW: part.w,
+            origH: part.h,
+            origRot: part.rot || 0,
+            dx: part.x - tx,
+            dy: part.y - ty
           });
         }
 
@@ -3218,15 +3250,21 @@
           for (let dy = 0; dy < p.h; dy++) {
             for (let dx = 0; dx < p.w; dx++) {
               if (APP.buildingGrid[p.y + dy][p.x + dx] === p.id) {
-                APP.buildingGrid[p.y + dy][p.x + dx] = null;
+                APP.buildingGrid[p.y + dy][p.x + dx] = (p.stackedOnId && APP.buildings.has(p.stackedOnId)) ? p.stackedOnId : null;
               }
             }
           }
         }
 
+        const initialRot = clicked.rot || 0;
+        APP.activeTool.rot = initialRot;
+        const rotInd = document.getElementById('rot-indicator');
+        if (rotInd) rotInd.textContent = `${initialRot}°`;
+
         APP.movingLayer2 = {
           anchorX: tx,
           anchorY: ty,
+          initialRot,
           items,
           ignoreIds
         };
@@ -3236,19 +3274,56 @@
 
       function canCommitMovedLayer2At(tx, ty) {
         if (!APP.movingLayer2) return false;
-        for (const item of APP.movingLayer2.items) {
-          const nx = tx + item.dx;
-          const ny = ty + item.dy;
-          const b = item.b;
-          for (let dy = 0; dy < b.h; dy++) {
-            for (let dx = 0; dx < b.w; dx++) {
-              const cx = nx + dx;
-              const cy = ny + dy;
+        const parts = getMovedLayer2Layout(tx, ty);
+        if (!parts) return false;
+
+        for (const p of parts) {
+          for (let dy = 0; dy < p.h; dy++) {
+            for (let dx = 0; dx < p.w; dx++) {
+              const cx = p.x + dx;
+              const cy = p.y + dy;
               if (!APP.inBounds(cx, cy)) return false;
               const occ = APP.buildingGrid[cy][cx];
               if (occ !== null && !APP.movingLayer2.ignoreIds.has(occ)) {
-                return false;
+                const existingB = APP.buildings.get(occ);
+                const isCondoSubUnit = p.def && p.def.parentHubType === 'condo' && !p.def.isFoundation;
+                const isHomesteadAddon = p.def && p.def.parentHubType === 'homestead' && p.def.isAttachment;
+                
+                if (existingB && (
+                  (isCondoSubUnit && existingB.defId === 'condo_foundation') ||
+                  (isHomesteadAddon && existingB.defId === 'homestead_yard')
+                )) {
+                  // Valid stacking overlap, ignore collision
+                } else {
+                  return false;
+                }
               }
+            }
+          }
+
+          if (!APP.settings.freePlacement && p.def) {
+            if (p.def.requiresDeposit) {
+              let overlapCount = 0;
+              for (let dy = 0; dy < p.h; dy++) {
+                for (let dx = 0; dx < p.w; dx++) {
+                  const row = APP.terrain[p.y + dy];
+                  const tCell = row ? row[p.x + dx] : null;
+                  if (tCell && tCell.type === p.def.requiresDeposit) overlapCount++;
+                }
+              }
+              const reqOverlap = p.def.minDepositOverlap || 1;
+              if (overlapCount < reqOverlap) return false;
+            }
+            if (p.def.requiresWaterOrShoal) {
+              let hasWater = false;
+              for (let dy = 0; dy < p.h; dy++) {
+                for (let dx = 0; dx < p.w; dx++) {
+                  const row = APP.terrain[p.y + dy];
+                  const tCell = row ? row[p.x + dx] : null;
+                  if (tCell && (tCell.type === 'river' || tCell.type === 'lake' || tCell.type === 'shoal')) hasWater = true;
+                }
+              }
+              if (!hasWater) return false;
             }
           }
         }
@@ -3259,10 +3334,39 @@
         if (!APP.movingLayer2) return false;
         if (!canCommitMovedLayer2At(tx, ty)) return false;
 
-        for (const item of APP.movingLayer2.items) {
-          const b = item.b;
-          b.x = tx + item.dx;
-          b.y = ty + item.dy;
+        const parts = getMovedLayer2Layout(tx, ty);
+        if (!parts) return false;
+
+        parts.sort((a, b) => {
+          const aF = a.def?.isFoundation ? 0 : 1;
+          const bF = b.def?.isFoundation ? 0 : 1;
+          return aF - bF;
+        });
+
+        for (const p of parts) {
+          const b = p.b;
+          b.x = p.x;
+          b.y = p.y;
+          b.w = p.w;
+          b.h = p.h;
+          b.rot = p.rot;
+          
+          b.stackedOnId = null;
+          const def = p.def;
+          if (def && def.isChild) {
+             const isCondoSub = def.parentHubType === 'condo' && !def.isFoundation;
+             const isHomesteadAd = def.parentHubType === 'homestead' && def.isAttachment;
+             if (isCondoSub || isHomesteadAd) {
+                const exId = APP.buildingGrid[b.y][b.x];
+                if (exId !== null && APP.buildings.has(exId)) {
+                   const exB = APP.buildings.get(exId);
+                   if ((isCondoSub && exB.defId === 'condo_foundation') || (isHomesteadAd && exB.defId === 'homestead_yard')) {
+                      b.stackedOnId = exId;
+                   }
+                }
+             }
+          }
+
           for (let dy = 0; dy < b.h; dy++) {
             for (let dx = 0; dx < b.w; dx++) {
               APP.buildingGrid[b.y + dy][b.x + dx] = b.id;
@@ -3280,6 +3384,11 @@
         if (!APP.movingLayer2) return;
         for (const item of APP.movingLayer2.items) {
           const b = item.b;
+          b.x = item.origX;
+          b.y = item.origY;
+          b.w = item.origW;
+          b.h = item.origH;
+          b.rot = item.origRot;
           for (let dy = 0; dy < b.h; dy++) {
             for (let dx = 0; dx < b.w; dx++) {
               APP.buildingGrid[b.y + dy][b.x + dx] = b.id;
@@ -3451,7 +3560,7 @@
             </div>
             <div style="color:var(--text-muted); font-size:11px; margin-bottom:5px;">
               Milestone: <strong style="color:var(--text-main);">${def.milestone}</strong>
-              ${def.hasDoor ? ` • Door: <strong id="ui-door-dir" style="color:#ffdf73;">${APP.getDoorSide(APP.activeTool.rot)}</strong>` : ''}
+              ${def.hasDoor ? ` • Door: <strong id="ui-door-dir" style="color:#ffdf73;">${APP.getDoorSide(APP.activeTool.rot, def.door || def.doorSide || 'S')}</strong>` : ''}
             </div>
             <div style="color:var(--text-main);">${def.desc}</div>
           `;
@@ -3463,13 +3572,16 @@
         if (e.key === 'r' || e.key === 'R') {
           // Use a tiny timeout to ensure the main engine has already updated the rotation math
           setTimeout(() => {
-            const doorSpan = document.getElementById('ui-door-dir');
-            if (doorSpan) {
-              doorSpan.textContent = APP.getDoorSide(APP.activeTool.rot);
-            }
-            const dimSpan = document.getElementById('ui-build-dims');
             const curId = (APP.activeTool.mode === 'build' && APP.activeTool.itemId) ? APP.activeTool.itemId : APP.lastBuildItemId;
-            if (dimSpan && curId && APP.BUILDING_DEFS[curId]) {
+            const def = curId ? APP.BUILDING_DEFS[curId] : null;
+            
+            const doorSpan = document.getElementById('ui-door-dir');
+            if (doorSpan && def) {
+              doorSpan.textContent = APP.getDoorSide(APP.activeTool.rot, def.door || def.doorSide || 'S');
+            }
+            
+            const dimSpan = document.getElementById('ui-build-dims');
+            if (dimSpan && def) {
               const { w, h } = APP.getRotatedDims(curId, APP.activeTool.rot);
               dimSpan.textContent = `${w}×${h}`;
             }
@@ -3637,12 +3749,12 @@
         if (bId !== null && APP.buildings.has(bId)) {
           const b = APP.buildings.get(bId);
           const def = APP.BUILDING_DEFS[b.defId];
+          const root = getRootHub(b);
           document.getElementById('st-building').textContent = def ? def.name : 'Building';
 
           if (!mouse.isDown) {
             let subText = `Footprint: ${b.w}×${b.h} • Tile (${tx + 1}, ${ty + 1})`;
-            if (def?.hasDoor) subText += ` • Door: ${APP.getDoorSide(b.rot)}`;
-            const root = getRootHub(b);
+            if (def?.hasDoor) subText += ` • Door: ${APP.getDoorSide(b.rot, def.door || def.doorSide || 'S')}`;
             if (root && APP.BUILDING_DEFS[root.defId]?.isHub) {
               const st = APP.getHubStats(root.id);
               if (st) {
@@ -3702,7 +3814,7 @@
         const py = b.y * S;
         const pw = b.w * S;
         const ph = b.h * S;
-        const side = APP.getDoorSide(b.rot);
+        const side = APP.getDoorSide(b.rot, def.door || def.doorSide || 'S');
 
         ctx.save();
         ctx.fillStyle = '#ffdf73';
@@ -3749,7 +3861,7 @@
         homestead:   [235, 208, 141], // Soft Pale Gold
         condo:       [212, 208, 200], // Crisp Pale Stone
         veg_farm:    [222, 184, 104], // Warm Harvest Amber
-       wheat_farm:  [222, 184, 104], // Warm Harvest Amber
+        grain_farm:  [222, 184, 104], // Warm Harvest Amber
         vineyard:    [222, 184, 104], // Warm Harvest Amber
         stockpile:   [214, 172, 122], // Warm Cedar / Bronze
         lumber_camp: [188, 214, 165], // Forest Sage
@@ -3910,7 +4022,7 @@
             ctx.setLineDash([4, 3]);
             ctx.strokeRect(px + 2, py + 2, pw - 4, ph - 4);
             ctx.setLineDash([]);
-       } else if (b.defId === 'veg_field' || b.defId === 'wheat_field' || b.defId === 'vine_field') {
+       } else if (b.defId === 'veg_field' || b.defId === 'grain_field' || b.defId === 'vine_field') {
             ctx.strokeStyle = 'rgba(0, 0, 0, 0.28)';
             ctx.lineWidth = 2;
             for (let ry = py + 5; ry < py + ph - 3; ry += 6) {
@@ -4074,7 +4186,23 @@
           if (!def) return;
 
           const { w, h } = APP.getRotatedDims(itemId, APP.activeTool.rot);
-          const check = APP.canPlaceBuilding(itemId, tx, ty, APP.activeTool.rot);
+          
+          // Identify if we're hovering a valid foundation to ignore it for the ghost collision check
+          const ignoreSet = new Set();
+          if (def.isChild && !def.isFoundation) {
+            const hoveredBldId = APP.buildingGrid[ty][tx];
+            if (hoveredBldId !== null && APP.buildings.has(hoveredBldId)) {
+              const hoveredBld = APP.buildings.get(hoveredBldId);
+              if (
+                (def.parentHubType === 'condo' && hoveredBld.defId === 'condo_foundation') ||
+                (def.parentHubType === 'homestead' && hoveredBld.defId === 'homestead_yard')
+              ) {
+                ignoreSet.add(hoveredBldId);
+              }
+            }
+          }
+
+          const check = APP.canPlaceBuilding(itemId, tx, ty, APP.activeTool.rot, ignoreSet);
           const px = tx * S;
           const py = ty * S;
           const pw = w * S;
@@ -4083,12 +4211,20 @@
           ctx.save();
           ctx.globalAlpha = 0.68;
           ctx.fillStyle = check.ok ? def.color : '#a82820';
-          ctx.fillRect(px + 1, py + 1, pw - 2, ph - 2);
-
-          ctx.globalAlpha = 1.0;
-          ctx.strokeStyle = check.ok ? '#6ee061' : '#ff5e52';
-          ctx.lineWidth = 2.2 / APP.camera.zoom;
-          ctx.strokeRect(px + 1, py + 1, pw - 2, ph - 2);
+          
+          if (def.isFoundation) {
+            ctx.fillRect(px + 1, py + 1, pw - 2, ph - 2);
+            ctx.globalAlpha = 1.0;
+            ctx.strokeStyle = check.ok ? '#6ee061' : '#ff5e52';
+            ctx.lineWidth = 2.2 / APP.camera.zoom;
+            ctx.strokeRect(px + 1, py + 1, pw - 2, ph - 2);
+          } else {
+            ctx.fillRect(px + 2, py + 2, pw - 4, ph - 4);
+            ctx.globalAlpha = 1.0;
+            ctx.strokeStyle = check.ok ? '#6ee061' : '#ff5e52';
+            ctx.lineWidth = 2.2 / APP.camera.zoom;
+            ctx.strokeRect(px + 2, py + 2, pw - 4, ph - 4);
+          }
 
           if (def.hasDoor) {
             drawDoorArrow(ctx, { defId: itemId, x: tx, y: ty, w, h, rot: APP.activeTool.rot }, S);
@@ -4105,24 +4241,47 @@
 
         if (APP.activeTool.mode === 'move' && APP.movingLayer2) {
           const valid = canCommitMovedLayer2At(tx, ty);
-          ctx.save();
-          for (const item of APP.movingLayer2.items) {
-            const b = item.b;
-            const def = APP.BUILDING_DEFS[b.defId];
-            const nx = (tx + item.dx) * S;
-            const ny = (ty + item.dy) * S;
-            const nw = b.w * S;
-            const nh = b.h * S;
+          const parts = getMovedLayer2Layout(tx, ty);
+          if (parts) {
+            ctx.save();
+            for (const p of parts) {
+              const def = p.def;
+              const nx = p.x * S;
+              const ny = p.y * S;
+              const nw = p.w * S;
+              const nh = p.h * S;
 
-            ctx.globalAlpha = 0.72;
-            ctx.fillStyle = valid ? (def?.color || '#5588aa') : '#a82820';
-            ctx.fillRect(nx + 1, ny + 1, nw - 2, nh - 2);
-            ctx.globalAlpha = 1.0;
-            ctx.strokeStyle = valid ? '#6ee061' : '#ff5e52';
-            ctx.lineWidth = 2 / APP.camera.zoom;
-            ctx.strokeRect(nx + 1, ny + 1, nw - 2, nh - 2);
+              ctx.globalAlpha = 0.68;
+              ctx.fillStyle = valid ? (def?.color || '#5588aa') : '#a82820';
+              
+              if (def && def.isFoundation) {
+                ctx.fillRect(nx + 1, ny + 1, nw - 2, nh - 2);
+                ctx.globalAlpha = 1.0;
+                ctx.strokeStyle = valid ? '#6ee061' : '#ff5e52';
+                ctx.lineWidth = 2.2 / APP.camera.zoom;
+                ctx.strokeRect(nx + 1, ny + 1, nw - 2, nh - 2);
+              } else {
+                ctx.fillRect(nx + 2, ny + 2, nw - 4, nh - 4);
+                ctx.globalAlpha = 1.0;
+                ctx.strokeStyle = valid ? '#6ee061' : '#ff5e52';
+                ctx.lineWidth = 2.2 / APP.camera.zoom;
+                ctx.strokeRect(nx + 2, ny + 2, nw - 4, nh - 4);
+              }
+
+              if (def && def.hasDoor) {
+                drawDoorArrow(ctx, { defId: p.b.defId, x: p.x, y: p.y, w: p.w, h: p.h, rot: p.rot }, S);
+              }
+
+              if (def && APP.camera.zoom >= 0.42) {
+                ctx.fillStyle = '#ffffff';
+                ctx.font = 'bold 12px "Segoe UI Emoji", sans-serif';
+                ctx.textAlign = 'center';
+                ctx.textBaseline = 'middle';
+                ctx.fillText(def.icon, nx + nw / 2, ny + nh / 2);
+              }
+            }
+            ctx.restore();
           }
-          ctx.restore();
           return;
         }
 
@@ -4877,10 +5036,11 @@ APP.evaluateAllWarnings = function () {
 
  // === [SLOT PHASE 5: PRESETS & PERSISTENCE] ===
     (function initPhase5PresetsAndPersistence() {
-const STORAGE_KEY_MAP = 'fabledom_planner_map_v1';
+      const STORAGE_KEY_MAP = 'fabledom_planner_map_v1';
       const STORAGE_KEY_PRESETS = 'fabledom_planner_perm_presets_v1';
       const STORAGE_KEY_SEEDS = 'fabledom_planner_terrain_seeds_v1';
       const STORAGE_KEY_HIDDEN_BUILTINS = 'fabledom_planner_hidden_builtins_v1';
+      const STORAGE_KEY_LAST_EXPORT = 'fabledom_planner_last_export_time_v1';
 
       // Helper to build a 2x2 Homestead sub-block (1 Hub + 1 Yard + 2 Addons)
       function make2x2Homestead(baseId, hubPos, hubRot, yardPos, addon1Pos, addon1Id, addon2Pos, addon2Id) {
@@ -5074,6 +5234,15 @@ const STORAGE_KEY_MAP = 'fabledom_planner_map_v1';
         a.click();
         document.body.removeChild(a);
         URL.revokeObjectURL(url);
+
+        try {
+          localStorage.setItem(STORAGE_KEY_LAST_EXPORT, exportData.savedAt);
+          if (typeof APP.updateExportIndicator === 'function') {
+            APP.updateExportIndicator();
+          }
+        } catch (err) {
+          console.warn('Could not save export timestamp:', err);
+        }
       };
 
       APP.openSaveExportModal = function (defaultName) {
@@ -5420,7 +5589,7 @@ const bodyHtml = hasInfo
           const badge = document.getElementById('autosave-indicator');
           if (badge) {
             const now = new Date();
-            badge.textContent = `Auto-saved ${now.toLocaleTimeString([], { hour: '2-digit', minute: '2-digit', second: '2-digit' })}`;
+            badge.textContent = `Auto-saved to browser ${now.toLocaleTimeString([], { hour: '2-digit', minute: '2-digit', second: '2-digit' })}`;
           }
         } catch (err) {
           console.warn('Auto-save to localStorage failed:', err);
@@ -5469,6 +5638,8 @@ const bodyHtml = hasInfo
             const bId = APP.buildingGrid[y][x];
             if (bId !== null && APP.buildings.has(bId)) {
               capturedBuildingIds.add(bId);
+              const b = APP.buildings.get(bId);
+              if (b.stackedOnId) capturedBuildingIds.add(b.stackedOnId);
             }
             const rVal = APP.roadGrid[y][x];
             if (rVal !== null) {
@@ -5517,7 +5688,8 @@ const bodyHtml = hasInfo
           w: b.w,
           h: b.h,
           rot: b.rot || 0,
-          origParentId: b.parentId || null
+          origParentId: b.parentId || null,
+          origStackedOnId: b.stackedOnId || null
         }));
 
         const normRoads = rawRoads.map(r => ({
@@ -5591,6 +5763,7 @@ const bodyHtml = hasInfo
         }
 
         for (const b of rotated.buildings) {
+          const def = APP.BUILDING_DEFS ? APP.BUILDING_DEFS[b.defId] : null;
           const bx = tx + b.ndx;
           const by = ty + b.ndy;
           for (let dy = 0; dy < b.nh; dy++) {
@@ -5600,8 +5773,20 @@ const bodyHtml = hasInfo
               if (!APP.inBounds(cx, cy)) {
                 return { ok: false, reason: 'Stamp extends outside the 95×95 grid.' };
               }
-              if (APP.buildingGrid[cy][cx] !== null) {
-                return { ok: false, reason: 'Stamp overlaps an existing building.' };
+              const occ = APP.buildingGrid[cy][cx];
+              if (occ !== null) {
+                const existingB = APP.buildings.get(occ);
+                const isCondoSubUnit = def && def.parentHubType === 'condo' && !def.isFoundation;
+                const isHomesteadAddon = def && def.parentHubType === 'homestead' && def.isAttachment;
+                
+                if (existingB && (
+                  (isCondoSubUnit && existingB.defId === 'condo_foundation') ||
+                  (isHomesteadAddon && existingB.defId === 'homestead_yard')
+                )) {
+                  // Allow valid stacking overlap
+                } else {
+                  return { ok: false, reason: 'Stamp overlaps an existing building.' };
+                }
               }
             }
           }
@@ -5672,7 +5857,8 @@ const bodyHtml = hasInfo
             rot: bItem.nrot,
             parentId: resolvedParentId,
             childrenIds: [],
-            warnings: []
+            warnings: [],
+            stackedOnId: null
           };
           APP.buildings.set(id, bObj);
           for (let dy = 0; dy < bObj.h; dy++) {
@@ -5694,7 +5880,13 @@ const bodyHtml = hasInfo
           oldToNewId.set(b.origId, placed.id);
         }
 
-        for (const c of children) {
+        const sortedChildren = children.sort((a, b) => {
+          const aF = APP.BUILDING_DEFS[a.defId]?.isFoundation ? 0 : 1;
+          const bF = APP.BUILDING_DEFS[b.defId]?.isFoundation ? 0 : 1;
+          return aF - bF;
+        });
+
+        for (const c of sortedChildren) {
           let parentId = c.origParentId && oldToNewId.has(c.origParentId)
             ? oldToNewId.get(c.origParentId)
             : null;
@@ -5702,7 +5894,13 @@ const bodyHtml = hasInfo
             const fallbackHub = APP.resolveParentHubForChild(c.defId, tx + c.ndx, ty + c.ndy);
             if (fallbackHub) parentId = fallbackHub.id;
           }
-          insertStampedBuilding(c, parentId);
+          
+          const newObj = insertStampedBuilding(c, parentId);
+          oldToNewId.set(c.origId, newObj.id);
+          
+          if (c.origStackedOnId && oldToNewId.has(c.origStackedOnId)) {
+            newObj.stackedOnId = oldToNewId.get(c.origStackedOnId);
+          }
         }
 
         if (typeof APP.evaluateAllWarnings === 'function') {
@@ -6170,6 +6368,22 @@ const bodyHtml = hasInfo
         }
       }
 
+      APP.updateExportIndicator = function () {
+        const el = document.getElementById('export-indicator');
+        if (!el) return;
+        const raw = localStorage.getItem(STORAGE_KEY_LAST_EXPORT);
+        if (!raw) {
+          el.textContent = 'Last exported: Never';
+          return;
+        }
+        const d = new Date(raw);
+        if (isNaN(d.getTime())) {
+          el.textContent = 'Last exported: Never';
+          return;
+        }
+        el.textContent = `Last exported: ${d.toLocaleTimeString([], { hour: '2-digit', minute: '2-digit', second: '2-digit' })}`;
+      };
+
       function renderDataSidebar() {
         const panel = document.getElementById('panel-data');
         if (!panel) return;
@@ -6185,9 +6399,10 @@ const bodyHtml = hasInfo
             <div style="font-size:11px; color:var(--text-muted); margin-bottom:8px; line-height:1.4;">
               Save or load your kingdom or terrain layout via JSON save files.
             </div>
-            <button class="tool-btn active" id="btn-export-kingdom-modal" style="width:100%; justify-content:center; font-size:12px; padding:7px; margin-bottom:8px;">
+            <button class="tool-btn active" id="btn-export-kingdom-modal" style="width:100%; justify-content:center; font-size:12px; padding:7px; margin-bottom:5px;">
               💾 Save Kingdom or Terrain
             </button>
+            <div id="export-indicator" style="font-size:10.5px; color:var(--text-muted); text-align:center; margin-bottom:8px;"></div>
             <div style="display:flex; gap:6px;">
               <button class="tool-btn" id="btn-load-full-kingdom" style="flex:1; justify-content:center; font-size:11.5px;" title="Load a complete kingdom save (buildings + terrain)">📂 Load Saved Kingdom</button>
               <button class="tool-btn" id="btn-load-map-only" style="flex:1; justify-content:center; font-size:11.5px;" title="Extract only the terrain layer from a save file">🗺️ Load Saved Map</button>
@@ -6197,11 +6412,7 @@ const bodyHtml = hasInfo
           <!-- Fabledom Terrain Importer -->
           <div class="panel-section-title" style="margin-top:14px;">Fabledom Terrain Importer</div>
           <div style="font-size:10.5px; color:var(--text-muted); line-height:1.4; margin-bottom:8px; padding:0 4px;">
-            <div>Load a native Fabledom <strong>.savegame</strong> file to auto-populate terrain and deposits.</div>
-            <div style="margin-top:5px; font-style:italic;">
-              If you aren't sure where to locate your save file, copy and paste this into your file explorer address bar:
-            </div>
-            <code style="display:block; margin-top:4px; padding:4px 7px; background:rgba(0, 0, 0, 0.4); border:1px solid rgba(255, 255, 255, 0.1); border-radius:3px; color:var(--accent-gold); font-family:Consolas, monospace; font-size:10px; word-break:break-all; user-select:all; -webkit-user-select:all; cursor:text;">%USERPROFILE%\\AppData\\LocalLow\\Grenaa Games\\Fabledom</code>
+            Load a native Fabledom <strong>.savegame</strong> file to auto-populate terrain and deposits.
           </div>
           <button class="tool-btn active" id="btn-import-fabledom-save" style="width:100%; justify-content:center; margin-bottom:14px; padding:7px;">
             ⛰️ Import Fabledom Save File
@@ -6214,7 +6425,7 @@ const bodyHtml = hasInfo
               🧹 Wipe Buildings (Keep Terrain)
             </button>
             <button class="tool-btn danger" id="btn-sidebar-wipe-canvas" style="width:100%; justify-content:center; font-size:11.5px;">
-              🔥 Wipe Canvas (Keep Permanent Presets)
+              🔥 Wipe Canvas (Keep Perm Presets)
             </button>
           </div>
         `;
@@ -6418,11 +6629,20 @@ const bodyHtml = hasInfo
 
                 ctx.globalAlpha = 0.70;
                 ctx.fillStyle = def ? def.color : '#888';
-                ctx.fillRect(bx + 1, by + 1, bw - 2, bh - 2);
-                ctx.globalAlpha = 1.0;
-                ctx.strokeStyle = check.ok ? '#6ee061' : '#ff5e52';
-                ctx.lineWidth = 2 / APP.camera.zoom;
-                ctx.strokeRect(bx + 1, by + 1, bw - 2, bh - 2);
+                
+                if (def && def.isFoundation) {
+                  ctx.fillRect(bx + 1, by + 1, bw - 2, bh - 2);
+                  ctx.globalAlpha = 1.0;
+                  ctx.strokeStyle = check.ok ? '#6ee061' : '#ff5e52';
+                  ctx.lineWidth = 2 / APP.camera.zoom;
+                  ctx.strokeRect(bx + 1, by + 1, bw - 2, bh - 2);
+                } else {
+                  ctx.fillRect(bx + 2, by + 2, bw - 4, bh - 4);
+                  ctx.globalAlpha = 1.0;
+                  ctx.strokeStyle = check.ok ? '#6ee061' : '#ff5e52';
+                  ctx.lineWidth = 2 / APP.camera.zoom;
+                  ctx.strokeRect(bx + 2, by + 2, bw - 4, bh - 4);
+                }
 
                 if (def && APP.camera.zoom >= 0.45) {
                   ctx.fillStyle = '#ffffff';
