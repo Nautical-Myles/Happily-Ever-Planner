@@ -1,11 +1,23 @@
-const CACHE_NAME = 'fabledom-planner-v0.2.1'; // <-- Increment this (v2, v3, etc.) on every update
+/* 
+ Copyright (C) 2026 Nautical-Myles
+ Use of this software is govered by the Business Source License included in the LICENSE.md file and at www.mariadb.com/bsl11.
+ Change Date: 1 January 2028
+ On the date above, in accordance with the Business Source License, use of this software will be governed by the open source license specified in the LICENSE.md file.
+*/
+
+const CACHE_NAME = 'happily-ever-planner-v0.2.4'
 
 const ASSETS_TO_CACHE = [
   './',
   './index.html',
+  './src/styles.css',
+  './src/app.js',
+  './src/sw-register.js',
+  './src/version-sync.js',
   './manifest.json',
-  './icon-192.png',
-  './icon-512.png'
+  './assets/icon-192.png',
+  './assets/icon-512.png',
+  './assets/title-card.png'
 ];
 
 // 1. Install: Cache the new assets immediately
