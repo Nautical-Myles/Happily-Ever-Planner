@@ -7,6 +7,10 @@ License text copyright © 2024 MariaDB plc, All Rights Reserved.
 
 **Licensed Work:** The "Licensed Work" (operating under the title "Happily Ever Planner: an Unofficial Companion for Fabledom") encompasses all original materials contained within this software repository. This includes, but is not limited to, all frontend source code (HTML, CSS, JavaScript) and background processing scripts (Web Workers); the logic, algorithms, and mathematical models used to parse save files, generate map canvases, restrict placement, and calculate desirability radiuses; all original user interface (UI) designs, user experience (UX) layouts, and custom graphical assets or icons created by the Licensor.
 
+**Change Date:** 1 January 2028
+
+**Change License:** GNU Affero General Public License v3.0 (AGPLv3)
+
 ## Additional Use Grant:
 
 Pursuant to the Business Source License 1.1, the Licensor hereby grants you the following additional, non-exclusive, worldwide, royalty-free permissions to use the Licensed Work prior to the Change Date:
@@ -27,12 +31,6 @@ Any Use of the Licensed Work for production use or commercial gain remains stric
 • Gating the Licensed Work, its features, or its source code behind a mandatory paywall, paid subscription, or monetization system.
 
 • Bundling or redistributing the Licensed Work inside a commercial product or service.
-
--------------------------------------
-
-**Change Date:** 1 January 2028
-
-**Change License:** GNU Affero General Public License v3.0 (AGPLv3)
 
 ## Terms
 The Licensor hereby grants you the right to copy, modify, create derivative works, redistribute, and make non-production use of the Licensed Work. The Licensor may make an Additional Use Grant, above, permitting limited production use.
