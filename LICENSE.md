@@ -21,12 +21,12 @@ You may freely download, run locally, copy, and modify the Licensed Work for per
 
 ### 3. Prohibited Commercial & Predatory Exploitation 
 Any Use of the Licensed Work for production use or commercial gain remains strictly prohibited prior to the Change Date without a separate written agreement from the Licensor. Prohibited commercial uses specifically include, but are not limited to:
-• Selling the Licensed Work, or any modified version or derivative of it, on any digital storefront.
-• Gating the Licensed Work, its features, or its source code behind a mandatory paywall, paid subscription, or monetization system.
-• Bundling or redistributing the Licensed Work inside a commercial product or service.
 
-### Disclaimer of Third-Party Intellectual Property
-The Licensor claims no ownership over the Fabledom name, trademarks, character designs, in-game graphical assets, or the underlying proprietary architecture of the .SAVEGAME files. All such intellectual property remains the exclusive property of Grenaa Games and Dear Villagers. This Licensed Work is an independent, unofficial companion tool and is not affiliated with, endorsed by, or sponsored by the game's developers or publishers.
+• Selling the Licensed Work, or any modified version or derivative of it, on any digital storefront.
+
+• Gating the Licensed Work, its features, or its source code behind a mandatory paywall, paid subscription, or monetization system.
+
+• Bundling or redistributing the Licensed Work inside a commercial product or service.
 
 -------------------------------------
 
