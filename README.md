@@ -31,6 +31,8 @@ Look for and click the "Install App" icon on the right side of your browser's UR
 **To install on Firefox:** 
 Open your Firefox Settings from the browser menu in the top right corner. Click on "Firefox Labs" in the left panel and enable the "Add sites to your taskbar" feature. Once it's enabled, you should see an installation icon on the right side of your URL address bar just like Chrome & Edge.
 
+It also runs just fine in the browser, with all the same functionality, if you prefer that! It just doesn't look quite as nice.
+
 ## First-year Safety Window
 This is my first project of this scope, and while it's not much, I am proud of it and want to maintain creative control initially, until I'm satisfied with it as a finished product. I also want it to remain free for the community to use forever. To protect the community from low-effort clones or commercialization, this project operates under the Business Source License (BUSL 1.1) for its first 14 months. This means you are completely free to download the code, run it locally, tinker with it, and make videos or streams using the app.
 
