@@ -5,7 +5,7 @@
  On the date above, in accordance with the Business Source License, use of this software will be governed by the open source license specified in the LICENSE.md file.
 */
 
-// Version 0.2.5
+// Version 0.2.6
     
     // =========================================================================
     // PHASE 1: CORE ENGINE, SHARED GLOBAL STATE (window.APP) & TERRITORY MAP
@@ -1157,7 +1157,17 @@
           message: 'Wipe entire canvas and start over with a blank map?',
           confirmText: '🔥 Wipe Canvas',
           danger: true,
-          onConfirm: executeWipe
+          onConfirm: () => {
+            executeWipe();
+            const splash = document.getElementById('startup-splash');
+            if (splash) splash.style.display = 'flex';
+            const leftGroup = document.getElementById('status-info-left');
+            const toolSpan = document.getElementById('status-info-tool');
+            const zoomSpan = document.getElementById('status-info-zoom');
+            if (leftGroup) leftGroup.style.visibility = 'hidden';
+            if (toolSpan) toolSpan.style.visibility = 'hidden';
+            if (zoomSpan) zoomSpan.style.visibility = 'hidden';
+          }
         });
       }
     };
