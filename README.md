@@ -46,7 +46,7 @@ Full disclosure up front: I built this app with the help of AI. As a longtime me
 The Happily Ever Planner doesn't have any of that. There's no plot to write, no audio to voice, and the only artist on the project is me. I’m just a 40-year-old gamer dad with no coding experience who wanted a way to blueprint my Fabledom kingdom and test out layouts before committing to them in the game. Figuring out how to build that in my spare time was an impossible stretch, so I leaned heavily on AI tools like Gemini to bridge my coding gaps and act as my tutor. With that massive assist, I managed to build the exact planning tool I wished existed. Now that it gets the job done for my own realm, I'm happy to share it with anyone else looking for the same thing, and I hope you find it as useful as I have!
 
 ## Support the Project 
-This app is 100% free, and there are no paywalled features, subscription tiers, or future milestone goals. I am doing this entirely in my spare time, so I will try to get to updates and bug fixes when time permits.
+This app is and always will be 100% free - no premium features or subscriptions, and feature updates and bug fixes will never be contingent on fundraising goals. I am doing this entirely in my spare time, so I will try to get to updates and bug fixes when time permits.
 
 If you find this tool helpful and want to say thank you for the work that went into it, you can drop a few dollars in the tip jar below. It is completely voluntary, and tips carry no obligation for future feature development.
 
