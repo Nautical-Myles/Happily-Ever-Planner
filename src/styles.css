@@ -5,6 +5,8 @@
  On the date above, in accordance with the Business Source License, use of this software will be governed by the open source license specified in the LICENSE.md file.
 */
 
+/* Version 0.3.0 */
+
 :root {
       --bg-deep: #14100d;
       --bg-panel: #1f1914;
@@ -183,6 +185,33 @@
 
     .sidebar-panels::-webkit-scrollbar-thumb:hover {
       background: var(--border-gold);
+    }
+
+    #appearance-control {
+      flex: 1 1 100%;
+      display: grid;
+      grid-template-columns: auto minmax(0, 1fr);
+      align-items: center;
+      gap: 8px;
+      min-width: 0;
+    }
+
+    #appearance-control label {
+      color: var(--text-muted);
+      font-size: 11px;
+      font-weight: 600;
+    }
+
+    #appearance-select {
+      width: 100%;
+      min-width: 0;
+      padding: 5px 8px;
+      border: 1px solid var(--border-muted);
+      border-radius: 4px;
+      background: var(--bg-panel-alt);
+      color: var(--text-main);
+      font-size: 11px;
+      cursor: pointer;
     }
 
     .tab-panel {
@@ -372,6 +401,66 @@
       height: 100%;
       overflow: hidden;
       background: #110d0a;
+    }
+
+    #startup-splash {
+      position: absolute;
+      inset: 0;
+      z-index: 200;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+      overflow: hidden;
+      padding: 12px;
+      background: var(--bg-deep);
+      text-align: center;
+    }
+
+    #splash-title-card {
+      width: 100%;
+      height: 0;
+      min-height: 0;
+      flex: 1 1 auto;
+      object-fit: contain;
+      margin-bottom: 12px;
+      filter: drop-shadow(0 12px 24px rgba(0, 0, 0, 0.6));
+    }
+
+    #splash-actions {
+      display: flex;
+      flex: 0 0 auto;
+      flex-wrap: wrap;
+      align-items: center;
+      justify-content: center;
+      gap: 8px;
+      max-width: 100%;
+    }
+
+    #splash-actions .splash-prompt {
+      color: var(--text-muted);
+      font-family: Georgia, serif;
+      font-size: 16px;
+    }
+
+    #splash-actions .splash-or {
+      color: var(--text-dim);
+      font-size: 13px;
+      font-style: italic;
+    }
+
+    #splash-actions #btn-splash-import {
+      flex-shrink: 0;
+      font-size: 14px;
+      font-weight: 600;
+      padding: 10px 20px;
+    }
+
+    #splash-actions #btn-splash-blank {
+      flex-shrink: 0;
+      font-size: 13px;
+      padding: 8px 16px;
+      color: var(--text-muted);
     }
 
     #main-canvas {

@@ -5,7 +5,7 @@
  On the date above, in accordance with the Business Source License, use of this software will be governed by the open source license specified in the LICENSE.md file.
 */
 
-// Version 0.2.6
+// Version 0.3.0
     
     // =========================================================================
     // PHASE 1: CORE ENGINE, SHARED GLOBAL STATE (window.APP) & TERRITORY MAP
@@ -72,6 +72,16 @@
     const miniCanvas = document.getElementById('minimap-canvas');
     const miniCtx = miniCanvas.getContext('2d');
     const tooltipEl = document.getElementById('hover-tooltip');
+
+    APP.isStorybookMap = function () {
+      return document.body.classList.contains('storybook-map');
+    };
+
+    APP.getCanvasTextFontFamily = function () {
+      return APP.isStorybookMap()
+        ? getComputedStyle(document.body).getPropertyValue('--font-story-body').trim()
+        : '"Segoe UI", sans-serif';
+    };
 
     // Terrain Color Palette Lookup (Shared across Phase 1 & Phase 2)
    APP.TERRAIN_COLORS = {
@@ -308,6 +318,11 @@
         }
       }
 
+      if (APP.isStorybookMap()) {
+        ctx.fillStyle = 'rgba(235, 218, 184, 0.055)';
+        ctx.fillRect(startX * S, startY * S, (endX - startX + 1) * S, (endY - startY + 1) * S);
+      }
+
       // Draw multi-tile deposit outlines if any exist
       if (APP.deposits.size > 0) {
         for (const dep of APP.deposits.values()) {
@@ -323,7 +338,9 @@
 
       // Draw subtle tile grid lines when zoomed in enough
       if (APP.camera.zoom >= 0.45) {
-        ctx.strokeStyle = 'rgba(0, 0, 0, 0.18)';
+        ctx.strokeStyle = APP.isStorybookMap()
+          ? 'rgba(74, 52, 31, 0.28)'
+          : 'rgba(0, 0, 0, 0.18)';
         ctx.lineWidth = 1 / APP.camera.zoom;
         ctx.beginPath();
         for (let x = startX; x <= endX + 1; x++) {
@@ -409,7 +426,7 @@
               ctx.textAlign = 'center';
               ctx.textBaseline = 'middle';
               ctx.fillText(`Territory (${ty + 1}, ${tx + 1})`, px + terrPx / 2, py + terrPx / 2 - 8);
-              ctx.font = `${Math.round(11 / Math.max(0.5, Math.min(1.2, APP.camera.zoom)))}px "Segoe UI", sans-serif`;
+              ctx.font = `${Math.round(11 / Math.max(0.5, Math.min(1.2, APP.camera.zoom)))}px ${APP.getCanvasTextFontFamily()}`;
               ctx.fillStyle = 'rgba(74, 55, 33, 0.65)';
               ctx.fillText('Unbought Land', px + terrPx / 2, py + terrPx / 2 + 10);
               ctx.restore();
@@ -420,7 +437,9 @@
 
       // Draw crisp territory boundary lines
       ctx.save();
-      ctx.strokeStyle = 'rgba(222, 179, 98, 0.65)';
+      ctx.strokeStyle = APP.isStorybookMap()
+        ? 'rgba(126, 91, 52, 0.52)'
+        : 'rgba(222, 179, 98, 0.65)';
       ctx.lineWidth = 2 / APP.camera.zoom;
       ctx.setLineDash([8 / APP.camera.zoom, 5 / APP.camera.zoom]);
       ctx.beginPath();
@@ -435,7 +454,7 @@
       ctx.setLineDash([]);
 
       // Outer Kingdom Map Border
-      ctx.strokeStyle = '#cfa358';
+      ctx.strokeStyle = APP.isStorybookMap() ? '#a9824c' : '#cfa358';
       ctx.lineWidth = 4 / APP.camera.zoom;
       ctx.strokeRect(0, 0, totalPx, totalPx);
       ctx.restore();
@@ -447,7 +466,9 @@
         const terrPx = T * S;
 
         // Draw solid translucent fog over unbought territories (No hatching)
-        ctx.fillStyle = 'rgba(20, 16, 12, 0.65)';
+        ctx.fillStyle = APP.isStorybookMap()
+          ? 'rgba(220, 202, 166, 0.66)'
+          : 'rgba(20, 16, 12, 0.65)';
         for (let ty = 0; ty < 5; ty++) {
           for (let tx = 0; tx < 5; tx++) {
             if (!APP.territories[ty][tx]) {
@@ -460,7 +481,7 @@
 
         // Draw warm gold border ONLY along outermost perimeter of contiguous active territories
         ctx.save();
-        ctx.strokeStyle = '#f0c265';
+        ctx.strokeStyle = APP.isStorybookMap() ? '#b18a50' : '#f0c265';
         ctx.lineWidth = 2.5 / APP.camera.zoom;
         ctx.beginPath();
         for (let ty = 0; ty < 5; ty++) {
@@ -537,9 +558,40 @@
     APP.render = function (ctx) {
       ctx.clearRect(0, 0, mainCanvas.width, mainCanvas.height);
 
-      // Deep background behind the 95x95 board
-      ctx.fillStyle = '#110d0a';
-      ctx.fillRect(0, 0, mainCanvas.width, mainCanvas.height);
+      if (APP.isStorybookMap()) {
+        const paper = ctx.createLinearGradient(0, 0, mainCanvas.width, mainCanvas.height);
+        paper.addColorStop(0, '#c5b087');
+        paper.addColorStop(0.48, '#b7a074');
+        paper.addColorStop(1, '#ceb98e');
+        ctx.fillStyle = paper;
+        ctx.fillRect(0, 0, mainCanvas.width, mainCanvas.height);
+
+        const wash = ctx.createRadialGradient(
+          mainCanvas.width * 0.32, mainCanvas.height * 0.28, 0,
+          mainCanvas.width * 0.32, mainCanvas.height * 0.28, Math.max(mainCanvas.width, mainCanvas.height) * 0.78
+        );
+        wash.addColorStop(0, 'rgba(235, 220, 184, 0.22)');
+        wash.addColorStop(1, 'rgba(104, 75, 43, 0.08)');
+        ctx.fillStyle = wash;
+        ctx.fillRect(0, 0, mainCanvas.width, mainCanvas.height);
+
+        ctx.save();
+        ctx.strokeStyle = 'rgba(91, 65, 38, 0.045)';
+        ctx.lineWidth = 1;
+        for (let i = 0; i < 36; i++) {
+          const x = (i * 97 + 31) % Math.max(1, mainCanvas.width);
+          const y = (i * 59 + 17) % Math.max(1, mainCanvas.height);
+          ctx.beginPath();
+          ctx.moveTo(x, y);
+          ctx.lineTo(Math.min(mainCanvas.width, x + 12 + (i % 17)), y + ((i % 3) - 1));
+          ctx.stroke();
+        }
+        ctx.restore();
+      } else {
+        // Deep background behind the 95x95 board
+        ctx.fillStyle = '#110d0a';
+        ctx.fillRect(0, 0, mainCanvas.width, mainCanvas.height);
+      }
 
       ctx.save();
       ctx.translate(APP.camera.x, APP.camera.y);
@@ -1816,7 +1868,7 @@
             ctx.fillText(def.icon, px + pw / 2, py + ph / 2 - 4);
 
             const label = def.short || def.name.replace(/\s*\(\d+[×x]\d+\)/g, '').trim();
-            ctx.font = 'bold 9px "Segoe UI", sans-serif';
+            ctx.font = `bold 9px ${APP.getCanvasTextFontFamily()}`;
             ctx.fillStyle = '#ffdfa0';
             ctx.fillText(label, px + pw / 2, py + ph - 8, pw - 8);
           }
@@ -1869,7 +1921,7 @@
 
             if (def.isDeposit && APP.camera.zoom >= 0.45) {
               ctx.fillStyle = '#ffffff';
-              ctx.font = 'bold 12px "Segoe UI", sans-serif';
+              ctx.font = `bold 12px ${APP.getCanvasTextFontFamily()}`;
               ctx.textAlign = 'center';
               ctx.textBaseline = 'middle';
               ctx.fillText(`${def.icon} ${w}×${h}`, tx * S + (w * S) / 2, ty * S + (h * S) / 2);
@@ -4023,11 +4075,11 @@
           ctx.fillRect(px + 1, py + 1, pw - 2, ph - 2);
 
           if (b.defId === 'condo_foundation') {
-            ctx.strokeStyle = '#bab2a6';
+            ctx.strokeStyle = APP.isStorybookMap() ? '#756044' : '#bab2a6';
             ctx.lineWidth = 1.5;
             ctx.strokeRect(px + 2, py + 2, pw - 4, ph - 4);
           } else if (b.defId === 'homestead_yard') {
-            ctx.strokeStyle = '#9c7a4c';
+            ctx.strokeStyle = APP.isStorybookMap() ? '#80613d' : '#9c7a4c';
             ctx.lineWidth = 1.5;
             ctx.setLineDash([4, 3]);
             ctx.strokeRect(px + 2, py + 2, pw - 4, ph - 4);
@@ -4042,7 +4094,9 @@
               ctx.stroke();
             }
           } else {
-            ctx.strokeStyle = 'rgba(255, 235, 195, 0.35)';
+            ctx.strokeStyle = APP.isStorybookMap()
+              ? 'rgba(74, 52, 31, 0.42)'
+              : 'rgba(255, 235, 195, 0.35)';
             ctx.lineWidth = 1.2;
             ctx.strokeRect(px + 2, py + 2, pw - 4, ph - 4);
           }
@@ -4075,8 +4129,12 @@
           }
 
           const isActiveHub = APP.activeTool.activeHubId && (b.id === APP.activeTool.activeHubId || b.parentId === APP.activeTool.activeHubId);
-          ctx.strokeStyle = isActiveHub ? '#ffdf73' : (def.isHub ? '#e6b85c' : '#261b12');
-          ctx.lineWidth = isActiveHub || def.isHub ? 2.2 : 1.5;
+          ctx.strokeStyle = isActiveHub
+            ? '#ffdf73'
+            : def.isHub
+              ? (APP.isStorybookMap() ? '#c29a58' : '#e6b85c')
+              : (APP.isStorybookMap() ? '#493522' : '#261b12');
+          ctx.lineWidth = isActiveHub || def.isHub ? 2.2 : (APP.isStorybookMap() ? 1.8 : 1.5);
           ctx.strokeRect(px + 2, py + 2, pw - 4, ph - 4);
 
           if (APP.camera.zoom >= 0.42) {
@@ -4088,7 +4146,7 @@
             ctx.fillText(def.icon, px + pw / 2, iconY);
 
             if ((b.w > 1 || b.h > 1) && APP.camera.zoom >= 0.65) {
-              ctx.font = 'bold 9.5px "Segoe UI", sans-serif';
+              ctx.font = `bold 9.5px ${APP.getCanvasTextFontFamily()}`;
               ctx.fillStyle = '#ffdfa0';
               ctx.fillText(def.short, px + pw / 2, py + ph - 7);
             }
@@ -4170,7 +4228,7 @@
             ctx.fillStyle = '#b8251d';
             ctx.fillRect(px + pw - 13, py + 2, 11, 11);
             ctx.fillStyle = '#ffffff';
-            ctx.font = 'bold 9px "Segoe UI", sans-serif';
+            ctx.font = `bold 9px ${APP.getCanvasTextFontFamily()}`;
             ctx.textAlign = 'center';
             ctx.textBaseline = 'middle';
             ctx.fillText('!', px + pw - 7.5, py + 7.5);
@@ -4865,7 +4923,7 @@ APP.evaluateAllWarnings = function () {
             ctx.strokeRect(cx - bw / 2, cy - bh / 2, bw, bh);
 
             ctx.fillStyle = net > 0 ? '#9be890' : (net < 0 ? '#ff948a' : '#ffe394');
-            ctx.font = 'bold 9.5px "Segoe UI", sans-serif';
+            ctx.font = `bold 9.5px ${APP.getCanvasTextFontFamily()}`;
             ctx.textAlign = 'center';
             ctx.textBaseline = 'middle';
             ctx.fillText(signStr, cx, cy);
@@ -6876,11 +6934,12 @@ const bodyHtml = hasInfo
         return { title, details };
       }
 
-      async function extractSavegameFromHandle(entry, metaMap) {
+      async function extractSavegameFromHandle(entry, metaMap, relativePath) {
         const file = await entry.getFile();
-        const base = entry.name.replace(/\.savegame$/i, '');
-        const slotMatch = base.match(/slot(\d+)/i);
-        const slotLabel = slotMatch ? `Slot ${slotMatch[1]}` : base;
+        const base = relativePath.replace(/\.savegame$/i, '');
+        const fileBase = entry.name.replace(/\.savegame$/i, '');
+        const slotMatch = fileBase.match(/slot(\d+)/i);
+        const slotLabel = slotMatch ? `Slot ${slotMatch[1]}` : fileBase;
 
         let metaText = '';
         const metaEntry = metaMap.get(base.toLowerCase());
@@ -6935,22 +6994,27 @@ const bodyHtml = hasInfo
         const savegameEntries = [];
         const metaMap = new Map();
 
-        for await (const entry of dirHandle.values()) {
-          if (entry.kind === 'file') {
-            const lower = entry.name.toLowerCase();
-            if (lower.endsWith('.savegame')) {
-              savegameEntries.push(entry);
-            } else {
-              // Pair any companion file matching slot base name (e.g. slot0.metadata, slot0.meta, slot0_meta, etc.)
-              const base = lower.replace(/\.(metadata|meta|json|txt|dat|bin)$/i, '').replace(/(_metadata|_meta)$/i, '');
-              metaMap.set(base, entry);
+        const collectEntries = async (directoryHandle, relativePath = '') => {
+          for await (const entry of directoryHandle.values()) {
+            const entryPath = relativePath ? `${relativePath}/${entry.name}` : entry.name;
+            if (entry.kind === 'directory') {
+              await collectEntries(entry, entryPath);
+            } else if (entry.kind === 'file') {
+              const lowerPath = entryPath.toLowerCase();
+              if (lowerPath.endsWith('.savegame')) {
+                savegameEntries.push({ entry, relativePath: entryPath });
+              } else {
+                const base = lowerPath.replace(/\.(metadata|meta|json|txt|dat|bin)$/i, '').replace(/(_metadata|_meta)$/i, '');
+                metaMap.set(base, entry);
+              }
             }
           }
-        }
+        };
+        await collectEntries(dirHandle);
 
         const items = [];
-        for (const entry of savegameEntries) {
-          const item = await extractSavegameFromHandle(entry, metaMap);
+        for (const { entry, relativePath } of savegameEntries) {
+          const item = await extractSavegameFromHandle(entry, metaMap, relativePath);
           items.push(item);
         }
 
@@ -7212,6 +7276,13 @@ const bodyHtml = hasInfo
         input.click();
       }
 
+      function reportDirectoryImportError(context, error) {
+        if (error && error.name === 'AbortError') return;
+        console.error(context, error);
+        const detail = error && error.message ? `\n\nDetails: ${error.message}` : '';
+        alert(`${context}${detail}`);
+      }
+
       APP.triggerImportFabledomSave = async function () {
         if (!window.showDirectoryPicker) {
           openFabledomFallbackFileInput();
@@ -7228,6 +7299,10 @@ const bodyHtml = hasInfo
             });
             await storeDirectoryHandle(dirHandle);
           } catch (err) {
+            reportDirectoryImportError(
+              'Could not open the Fabledom save-folder picker. Try a supported browser or use the deployed app.',
+              err
+            );
             return;
           }
         }
@@ -7243,18 +7318,16 @@ const bodyHtml = hasInfo
                 });
                 await storeDirectoryHandle(newHandle);
                 await runBrowser(newHandle);
-              } catch (e) {}
+              } catch (err) {
+                reportDirectoryImportError('Could not select the Fabledom save folder.', err);
+              }
             });
           } catch (scanErr) {
             await clearSavedDirectoryHandle();
-            try {
-              const freshHandle = await window.showDirectoryPicker({
-                id: 'fabledomSavesFolder',
-                mode: 'read'
-              });
-              await storeDirectoryHandle(freshHandle);
-              await runBrowser(freshHandle);
-            } catch (e) {}
+            reportDirectoryImportError(
+              'Could not read the selected folder. Select the Fabledom SaveData folder and allow read access.',
+              scanErr
+            );
           }
         };
 
