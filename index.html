@@ -5,7 +5,7 @@
  On the date above, in accordance with the Business Source License, use of this software will be governed by the open source license specified in the LICENSE.md file.
 -->
 
-<!-- Version 0.2.6 -->
+<!-- Version 0.3.0 -->
 
 <!DOCTYPE html>
 <html lang="en">
@@ -27,6 +27,7 @@
   <link rel="icon" type="image/png" href="./assets/icon-512.png" />
   <link rel="apple-touch-icon" href="./assets/icon-512.png" />
   <link rel="stylesheet" href="./src/styles.css" />
+  <link rel="stylesheet" href="./src/storybook-theme.css" />
 </head>
 <body>
 
@@ -89,7 +90,7 @@
   </div>
 
   <!-- SIDEBAR FOOTER: Links & Supporter Button -->
-  <div id="sidebar-footer" style="padding: 10px 12px; border-top: 1px solid var(--border-gold); background: #17120e; flex-shrink: 0; display: flex; gap: 10px; align-items: center;">
+  <div id="sidebar-footer" style="padding: 10px 12px; border-top: 1px solid var(--border-gold); background: #17120e; flex-shrink: 0; display: flex; flex-wrap: wrap; gap: 10px; align-items: center;">
     <style>
       #btn-about-legal {
         flex: 1;
@@ -138,6 +139,16 @@
       }
     </style>
 
+    <div id="appearance-control">
+      <label for="appearance-select">Appearance</label>
+      <select id="appearance-select" aria-label="Appearance">
+        <option value="classic">Basic</option>
+        <option value="menus" selected>Storybook: Menus</option>
+        <option value="map">Storybook: Map Only</option>
+        <option value="all">Storybook: All</option>
+        <option value="high-contrast" disabled>High contrast (coming soon)</option>
+      </select>
+    </div>
     <a href="https://ko-fi.com/nauticalmyles" 
        target="_blank" 
        rel="noopener noreferrer" 
@@ -228,12 +239,14 @@
   <canvas id="main-canvas"></canvas>
 
   <!-- Startup Splash Screen -->
-  <div id="startup-splash" style="position: absolute; inset: 0; background: var(--bg-deep); z-index: 200; display: flex; flex-direction: column; align-items: center; justify-content: center; text-align: center;">
-    <img src="./assets/title-card.png" alt="Happily Ever Planner title card" style="width: 512px; height: 512px; max-width: 90vw; max-height: 55vh; object-fit: contain; margin-bottom: 24px; filter: drop-shadow(0 12px 24px rgba(0,0,0,0.6));" />
-    <div style="font-size: 16px; color: var(--text-muted); margin-bottom: 18px; font-family: Georgia, serif;">To get started,</div>
-    <button class="tool-btn active" id="btn-splash-import" style="font-size: 14px; padding: 10px 20px; margin-bottom: 14px; font-weight: 600;">⛰️ Import a Fabledom Save File</button>
-    <div style="font-size: 13px; color: var(--text-dim); margin-bottom: 14px; font-style: italic;">or</div>
-    <button class="tool-btn" id="btn-splash-blank" style="font-size: 13px; padding: 8px 16px; color: var(--text-muted);">Start with a blank canvas</button>
+  <div id="startup-splash">
+    <img id="splash-title-card" src="./assets/title-card.png" alt="Happily Ever Planner title card" />
+    <div id="splash-actions">
+      <span class="splash-prompt">To get started:</span>
+      <button class="tool-btn active" id="btn-splash-import">⛰️ Import a Fabledom Save File</button>
+      <span class="splash-or">or</span>
+      <button class="tool-btn" id="btn-splash-blank">Start with a blank canvas</button>
+    </div>
   </div>
 
       <!-- Floating 5x5 Territory Minimap -->
@@ -271,6 +284,7 @@
   </div>
 
  <script src="./src/app.js"></script>
+ <script src="./src/theme-toggle.js"></script>
 
 <!-- Service Worker Registration -->
 <script src="./src/sw-register.js"></script>
