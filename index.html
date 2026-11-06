@@ -5,7 +5,7 @@
  On the date above, in accordance with the Business Source License, use of this software will be governed by the open source license specified in the LICENSE.md file.
 -->
 
-<!-- Version 0.3.0 -->
+<!-- Version 0.3.5 -->
 
 <!DOCTYPE html>
 <html lang="en">
@@ -17,7 +17,7 @@
   <!-- Social Media Preview (OpenGraph / Twitter Cards) -->
   <meta property="og:title" content="Happily Ever Planner" />
   <meta property="og:description" content="Draft Your Dream Realm" />
-  <meta property="og:image" content="https://nautical-myles.github.io/Happily-Ever-Planner/assets/banner-card-2.jpg" />
+  <meta property="og:image" content="https://nautical-myles.github.io/Happily-Ever-Planner/assets/banner-card.jpg" />
   <meta property="og:url" content="https://nautical-myles.github.io/Happily-Ever-Planner/" />
   <meta name="twitter:card" content="summary_large_image" />
   
@@ -140,14 +140,21 @@
     </style>
 
     <div id="appearance-control">
-      <label for="appearance-select">Appearance</label>
-      <select id="appearance-select" aria-label="Appearance">
-        <option value="classic">Basic</option>
-        <option value="menus" selected>Storybook: Menus</option>
-        <option value="map">Storybook: Map Only</option>
-        <option value="all">Storybook: All</option>
-        <option value="high-contrast" disabled>High contrast (coming soon)</option>
-      </select>
+      <div class="appearance-field">
+        <label for="ui-appearance-select">UI</label>
+        <select id="ui-appearance-select" aria-label="UI appearance">
+          <option value="storybook" selected>Storybook</option>
+          <option value="basic">Basic</option>
+          <option value="high-contrast">High Contrast</option>
+        </select>
+      </div>
+      <div class="appearance-field">
+        <label for="map-appearance-select">Map</label>
+        <select id="map-appearance-select" aria-label="Map appearance">
+          <option value="storybook">Storybook</option>
+          <option value="basic" selected>Basic</option>
+        </select>
+      </div>
     </div>
     <a href="https://ko-fi.com/nauticalmyles" 
        target="_blank" 
