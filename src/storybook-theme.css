@@ -5,7 +5,7 @@
  On the date above, in accordance with the Business Source License, use of this software will be governed by the open source license specified in the LICENSE.md file.
 */
 
-/* Version 0.3.7 */
+/* Version 0.3.8 */
 
 body.storybook-theme {
   color-scheme: light;
@@ -177,6 +177,11 @@ body.storybook-theme #statusbar {
 
 body.storybook-theme #statusbar {
   color: #594327;
+}
+
+body.storybook-theme #app-version {
+  color: #3b2b1d;
+  opacity: 0.8 !important;
 }
 
 body.storybook-theme #statusbar .status-item strong {
