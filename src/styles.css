@@ -5,10 +5,10 @@
  On the date above, in accordance with the Business Source License, use of this software will be governed by the open source license specified in the LICENSE.md file.
 */
 
-/* Version 0.3.0 */
+/* Version 0.3.5 */
 
 :root {
-      --bg-deep: #14100d;
+      --bg-deep: #110d0a;
       --bg-panel: #1f1914;
       --bg-panel-alt: #29211a;
       --bg-parchment-dark: #332920;
@@ -17,7 +17,7 @@
       --border-muted: #47392b;
       --text-main: #eee0c5;
       --text-muted: #b09d7c;
-      --text-dim: #7d6d54;
+      --text-dim: #9b896f;
       --accent-gold: #d9a74a;
       --accent-green: #4e8c45;
       --accent-red: #b84439;
@@ -190,9 +190,17 @@
     #appearance-control {
       flex: 1 1 100%;
       display: grid;
-      grid-template-columns: auto minmax(0, 1fr);
+      grid-template-columns: repeat(2, minmax(0, 1fr));
       align-items: center;
       gap: 8px;
+      min-width: 0;
+    }
+
+    .appearance-field {
+      display: grid;
+      grid-template-columns: auto minmax(0, 1fr);
+      align-items: center;
+      gap: 5px;
       min-width: 0;
     }
 
@@ -202,7 +210,7 @@
       font-weight: 600;
     }
 
-    #appearance-select {
+    #appearance-control select {
       width: 100%;
       min-width: 0;
       padding: 5px 8px;
@@ -212,6 +220,11 @@
       color: var(--text-main);
       font-size: 11px;
       cursor: pointer;
+    }
+
+    #appearance-control select:focus-visible {
+      outline: 2px solid var(--accent-gold);
+      outline-offset: 2px;
     }
 
     .tab-panel {

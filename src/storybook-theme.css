@@ -5,7 +5,7 @@
  On the date above, in accordance with the Business Source License, use of this software will be governed by the open source license specified in the LICENSE.md file.
 */
 
-/* Version 0.3.0 */
+/* Version 0.3.5 */
 
 body.storybook-theme {
   color-scheme: light;
@@ -51,6 +51,10 @@ body.storybook-theme #startup-splash > div {
   font-family: var(--font-story-display) !important;
 }
 
+body.storybook-theme #startup-splash {
+  background: #241b14;
+}
+
 body.storybook-theme #sidebar {
   background-color: #d2bf98;
   background-image:
@@ -75,7 +79,7 @@ body.storybook-theme .brand-title {
 }
 
 body.storybook-theme .brand-subtitle {
-  color: #705839;
+  color: #594327;
 }
 
 body.storybook-theme .brand-crest {
@@ -96,7 +100,7 @@ body.storybook-theme .sidebar-tabs {
 }
 
 body.storybook-theme .tab-btn {
-  color: #705839;
+  color: #594327;
   border-right-color: rgba(99, 71, 41, 0.22);
 }
 
@@ -113,8 +117,8 @@ body.storybook-theme .tab-btn.active {
 
 body.storybook-theme .sidebar-panels {
   --text-main: #3b2b1d;
-  --text-muted: #705839;
-  --text-dim: #806b4e;
+  --text-muted: #594327;
+  --text-dim: #604a30;
   --accent-gold: #76552d;
   --border-muted: #a78c5d;
   --border-gold: #96764a;
@@ -172,7 +176,7 @@ body.storybook-theme #statusbar {
 }
 
 body.storybook-theme #statusbar {
-  color: #705839;
+  color: #594327;
 }
 
 body.storybook-theme #statusbar .status-item strong {
@@ -234,7 +238,7 @@ body.storybook-theme .tool-btn.danger:hover {
 }
 
 body.storybook-theme .kbd-hint {
-  color: #705839;
+  color: #594327;
   background: rgba(137, 107, 66, 0.12);
   border-color: rgba(99, 71, 41, 0.24);
 }
@@ -329,7 +333,7 @@ body.storybook-theme .status-badge.active {
 
 body.storybook-theme .status-badge.unbought {
   background: rgba(137, 107, 66, 0.12);
-  color: #705839;
+  color: #594327;
   border-color: #a78c5d;
 }
 
@@ -377,16 +381,17 @@ body.storybook-theme #appearance-control label {
   color: #624627;
 }
 
-body.storybook-theme #appearance-select {
+body.storybook-theme #appearance-control select {
   color: #493722;
   background-color: #dbc9a4;
   background-image:
     radial-gradient(ellipse at 12% 0%, rgba(255, 255, 245, 0.4), transparent 72%),
     linear-gradient(135deg, #dfcfaa, #ceb88e);
   border-color: #b19a70;
+  outline-color: #624627;
 }
 
-body.storybook-theme #appearance-select option {
+body.storybook-theme #appearance-control select option {
   color: #3b2b1d;
   background: #dbc9a4;
 }
@@ -520,7 +525,7 @@ body.storybook-theme #presets-pinned-top input {
 }
 
 body.storybook-theme #presets-pinned-top input::placeholder {
-  color: #806b4e;
+  color: #604a30;
 }
 
 body.storybook-theme #presets-scroll-area::-webkit-scrollbar-track {
@@ -635,7 +640,7 @@ body.storybook-theme #panel-buildings [style*="color:var(--text-muted)"],
 body.storybook-theme #panel-buildings [style*="color:var(--text-main)"],
 body.storybook-theme #panel-presets [style*="color:var(--text-muted)"],
 body.storybook-theme #panel-presets [style*="color:var(--text-main)"] {
-  color: #705839 !important;
+  color: #594327 !important;
 }
 
 body.storybook-theme #panel-buildings #build-info-card [style*="color:var(--text-main)"],
@@ -658,7 +663,7 @@ body.storybook-theme #panel-presets input {
 
 body.storybook-theme #panel-data input::placeholder,
 body.storybook-theme #panel-presets input::placeholder {
-  color: #806b4e;
+  color: #604a30;
 }
 
 body.storybook-theme .medieval-modal-card {
@@ -681,4 +686,233 @@ body.storybook-theme .medieval-modal-body {
 
 body.storybook-theme .medieval-modal-footer {
   background: rgba(112, 88, 57, 0.08);
+}
+
+body.high-contrast {
+  color-scheme: dark;
+  --bg-deep: #000000;
+  --bg-panel: #000000;
+  --bg-panel-alt: #111111;
+  --bg-parchment-dark: #000000;
+  --border-gold: #ffffff;
+  --border-gold-bright: #d5a6ff;
+  --border-muted: #ffffff;
+  --text-main: #ffffff;
+  --text-muted: #ffffff;
+  --text-dim: #ffffff;
+  --accent-gold: #d5a6ff;
+  --accent-green: #00ff00;
+  --accent-red: #ff6b6b;
+  --accent-blue: #70f8ff;
+  --shadow-heavy: none;
+  color: #ffffff;
+  background: #000000;
+}
+
+body.high-contrast #sidebar,
+body.high-contrast .brand-header,
+body.high-contrast .sidebar-tabs,
+body.high-contrast .sidebar-panels,
+body.high-contrast #toolbar,
+body.high-contrast #sidebar-footer,
+body.high-contrast #statusbar,
+body.high-contrast #startup-splash,
+body.high-contrast #minimap-card,
+body.high-contrast #hover-tooltip,
+body.high-contrast .medieval-modal-card,
+body.high-contrast #complex-inspector-drawer,
+body.high-contrast #build-info-card,
+body.high-contrast #presets-pinned-top {
+  color: #ffffff !important;
+  background-color: #000000 !important;
+  background-image: none !important;
+  border-color: #ffffff !important;
+  box-shadow: none !important;
+}
+
+body.high-contrast #sidebar {
+  border-right: 2px solid #ffffff;
+}
+
+body.high-contrast #toolbar {
+  border-bottom: 2px solid #ffffff;
+}
+
+body.high-contrast #statusbar,
+body.high-contrast #sidebar-footer {
+  border-top: 1px solid #ffffff;
+}
+
+body.high-contrast .brand-title,
+body.high-contrast .panel-section-title,
+body.high-contrast .tab-btn.active,
+body.high-contrast .minimap-header,
+body.high-contrast #hover-tooltip .tt-title,
+body.high-contrast .medieval-modal-header {
+  color: #d5a6ff !important;
+}
+
+body.high-contrast .tab-btn,
+body.high-contrast .brand-subtitle,
+body.high-contrast .sidebar-panels,
+body.high-contrast #statusbar,
+body.high-contrast .minimap-footer,
+body.high-contrast #hover-tooltip,
+body.high-contrast #hover-tooltip .tt-sub,
+body.high-contrast .medieval-modal-body {
+  color: #ffffff !important;
+}
+
+body.high-contrast .tab-btn,
+body.high-contrast .toolbar-divider,
+body.high-contrast .panel-section-title,
+body.high-contrast .kbd-hint,
+body.high-contrast .status-badge,
+body.high-contrast .minimap-header,
+body.high-contrast #minimap-canvas {
+  border-color: #ffffff !important;
+}
+
+body.high-contrast .tab-btn:hover,
+body.high-contrast .tool-btn:hover,
+body.high-contrast .palette-btn:hover,
+body.high-contrast .toggle-pill:hover,
+body.high-contrast #btn-about-legal:hover {
+  color: #d5a6ff !important;
+  background: #111111 !important;
+  border-color: #d5a6ff !important;
+}
+
+body.high-contrast .tab-btn.active,
+body.high-contrast .tool-btn.active,
+body.high-contrast .palette-btn.active,
+body.high-contrast .toggle-pill.active {
+  color: #000000 !important;
+  background: #d5a6ff !important;
+  border-color: #d5a6ff !important;
+  box-shadow: none !important;
+}
+
+body.high-contrast .tool-btn,
+body.high-contrast .palette-btn,
+body.high-contrast .toggle-pill,
+body.high-contrast #appearance-control select,
+body.high-contrast #panel-data input,
+body.high-contrast #panel-presets input,
+body.high-contrast #presets-pinned-top input,
+body.high-contrast .psec-toggle-btn,
+body.high-contrast #btn-restore-builtins,
+body.high-contrast #btn-about-legal,
+body.high-contrast #splash-actions button,
+body.high-contrast .medieval-modal-card button {
+  color: #ffffff;
+  background: #000000 !important;
+  background-image: none !important;
+  border: 2px solid #ffffff !important;
+  box-shadow: none !important;
+}
+
+body.high-contrast #splash-actions #btn-splash-import,
+body.high-contrast #splash-actions #btn-splash-import:hover {
+  color: #000000 !important;
+  background: #d5a6ff !important;
+  border-color: #d5a6ff !important;
+}
+
+body.high-contrast .tool-btn.danger,
+body.high-contrast .tool-btn.danger:hover,
+body.high-contrast #panel-data .tool-btn.danger,
+body.high-contrast #panel-buildings .tool-btn.danger,
+body.high-contrast #panel-presets .tool-btn.danger,
+body.high-contrast .status-badge.unbought,
+body.high-contrast #hover-tooltip .tt-warn {
+  color: #ff8a80 !important;
+  border-color: #ff8a80 !important;
+}
+
+body.high-contrast .status-badge.active {
+  color: #00ff00 !important;
+  border-color: #00ff00 !important;
+  background: #000000 !important;
+}
+
+body.high-contrast .status-badge.unbought {
+  background: #000000 !important;
+}
+
+body.high-contrast #appearance-control label,
+body.high-contrast #statusbar .status-item strong,
+body.high-contrast .splash-prompt,
+body.high-contrast .splash-or,
+body.high-contrast #btn-about-legal {
+  color: #ffffff !important;
+}
+
+body.high-contrast #appearance-control select,
+body.high-contrast #panel-data input,
+body.high-contrast #panel-presets input,
+body.high-contrast #presets-pinned-top input {
+  color: #ffffff !important;
+  background-color: #000000 !important;
+  border-color: #ffffff !important;
+}
+
+body.high-contrast #appearance-control select option {
+  color: #ffffff;
+  background: #000000;
+}
+
+body.high-contrast input::placeholder,
+body.high-contrast textarea::placeholder {
+  color: #ffffff !important;
+  opacity: 1;
+}
+
+body.high-contrast .panel-placeholder,
+body.high-contrast #complex-inspector-drawer,
+body.high-contrast #build-info-card,
+body.high-contrast #presets-pinned-top > div[style*="background"],
+body.high-contrast #presets-pinned-top > div > div[style*="background"],
+body.high-contrast #presets-scroll-area [style*="background"],
+body.high-contrast #perm-preset-list > div[style*="background"],
+body.high-contrast #session-preset-list > div[style*="background"],
+body.high-contrast #panel-data > div[style*="background"],
+body.high-contrast #panel-data > div > div[style*="background"] {
+  color: #ffffff !important;
+  background: #000000 !important;
+  background-image: none !important;
+  border: 1px solid #ffffff !important;
+}
+
+body.high-contrast #build-info-card [style*="color"],
+body.high-contrast #presets-pinned-top [style*="color"],
+body.high-contrast #presets-scroll-area [style*="color"],
+body.high-contrast #panel-data [style*="color"],
+body.high-contrast #panel-buildings [style*="color"],
+body.high-contrast #panel-presets [style*="color"] {
+  color: #ffffff !important;
+}
+
+body.high-contrast #btn-kofi-supporter,
+body.high-contrast #btn-kofi-supporter:hover {
+  color: #ffffff !important;
+  background-color: #5a189a !important;
+  background-image: linear-gradient(180deg, #7b2cbf 0%, #5a189a 100%) !important;
+  border: 2px solid #d5a6ff !important;
+  box-shadow: none !important;
+}
+
+body.high-contrast :focus-visible {
+  outline: 3px solid #d5a6ff !important;
+  outline-offset: 2px;
+}
+
+body.high-contrast .toggle-pill .toggle-dot {
+  background: #ffffff !important;
+  box-shadow: none !important;
+}
+
+body.high-contrast .toggle-pill.active .toggle-dot {
+  background: #000000 !important;
+  border: 1px solid #000000;
 }
