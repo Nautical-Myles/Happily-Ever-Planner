@@ -5,7 +5,7 @@
  On the date above, in accordance with the Business Source License, use of this software will be governed by the open source license specified in the LICENSE.md file.
 */
 
-// Version 0.3.6
+// Version 0.3.7
 
 const uiAppearanceSelect = document.getElementById('ui-appearance-select');
 const mapAppearanceSelect = document.getElementById('map-appearance-select');
