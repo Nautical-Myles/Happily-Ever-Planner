@@ -5,7 +5,7 @@
  On the date above, in accordance with the Business Source License, use of this software will be governed by the open source license specified in the LICENSE.md file.
 */
 
-const CACHE_NAME = 'happily-ever-planner-v0.3.6'; // Update this version number whenever you make changes to the assets
+const CACHE_NAME = 'happily-ever-planner-v0.3.7'; // Update this version number whenever you make changes to the assets
 
 const ASSETS_TO_CACHE = [
   './',
@@ -45,11 +45,31 @@ self.addEventListener('activate', (event) => {
   );
 });
 
-// 3. Fetch: Serve from cache, fall back to network
+// 3. Fetch: Refresh same-origin requests from the network and use cache offline
 self.addEventListener('fetch', (event) => {
+  const requestUrl = new URL(event.request.url);
+  if (event.request.method !== 'GET' || requestUrl.origin !== self.location.origin) {
+    return;
+  }
+
   event.respondWith(
-    caches.match(event.request).then((cachedResponse) => {
-      return cachedResponse || fetch(event.request);
+    fetch(event.request, { cache: 'no-store' }).then(async (response) => {
+      if (response.ok) {
+        try {
+          const cache = await caches.open(CACHE_NAME);
+          await cache.put(event.request, response.clone());
+        } catch (error) {
+          console.warn('Could not update the service worker cache:', error);
+        }
+      }
+      return response;
+    }).catch(async () => {
+      const cache = await caches.open(CACHE_NAME);
+      const cachedResponse = await cache.match(event.request);
+      if (cachedResponse) {
+        return cachedResponse;
+      }
+      throw new Error(`Network request failed and no cached response exists for ${event.request.url}`);
     })
   );
 });
