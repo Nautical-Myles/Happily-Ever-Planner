@@ -5,7 +5,7 @@
  On the date above, in accordance with the Business Source License, use of this software will be governed by the open source license specified in the LICENSE.md file.
 */
 
-const CACHE_NAME = 'happily-ever-planner-v0.3.5'; // Update this version number whenever you make changes to the assets
+const CACHE_NAME = 'happily-ever-planner-v0.3.6'; // Update this version number whenever you make changes to the assets
 
 const ASSETS_TO_CACHE = [
   './',
