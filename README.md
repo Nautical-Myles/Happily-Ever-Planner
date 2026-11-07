@@ -3,7 +3,7 @@
 
 Lightweight PWA built to help players plan and optimize city layouts for Fabledom. Capable of importing all map terrain and resource deposits from a game-generated save-game file, planning/mapping all buildings and desirability effects, and saving full kingdom playthroughs and terrain maps. 
 
-Submit Bug Reports, Feature Requests, and anything else you want to talk about by clicking "New Issue" in the [Issues tab](https://github.com/Nautical-Myles/Happily-Ever-Planner/issues/).
+Submit Bug Reports, Feature Requests, and anything else you want to talk about in the [Issues tab](https://github.com/Nautical-Myles/Happily-Ever-Planner/issues/).
 
 *Current version: 0.3.8*
 
