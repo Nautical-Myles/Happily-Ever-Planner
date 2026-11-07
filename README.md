@@ -5,17 +5,57 @@ Lightweight PWA built to help players plan and optimize city layouts for Fabledo
 
 Submit Bug Reports, Feature Requests, and anything else you want to talk about in the [Issues tab](https://github.com/Nautical-Myles/Happily-Ever-Planner/issues/).
 
-*Current version: 0.3.8*
+*Current version: 1.0.0*
 
 Thank you for taking the time to visit the page and give this project a try. I genuinely appreciate your interest, and I hope this tool helps you plan your kingdom just as much as it has helped me!
 
 ## Screenshots (Click to Expand)
-<img width="40%" height="40%" alt="Splash" src="https://github.com/user-attachments/assets/97bc562f-9f74-4802-83c0-2a82cabef9b0" />
-<img width="40%" height="40%" alt="Terrain" src="https://github.com/user-attachments/assets/394de73e-be73-49c9-97ab-14626e943a95" />
-<img width="40%" height="40%" alt="Melodia" src="https://github.com/user-attachments/assets/1cdf89ac-350b-4d6e-963c-5133d3ebb4c1" />
-<img width="40%" height="40%" alt="Melodia Zoom" src="https://github.com/user-attachments/assets/a7db4b99-0d37-45e7-a4b7-cf4c1a6c55f5" />
-<img width="40%" height="40%" alt="Desirability" src="https://github.com/user-attachments/assets/5404719b-a0eb-49bf-abda-d1af08ffa265" />
-<img width="40%" height="40%" alt="Water" src="https://github.com/user-attachments/assets/98c72841-d8d1-43d5-8a9e-51530ac1900a" />
+<table border="0">
+  <!-- ROW 1 -->
+  <tr>
+    <!-- Column 1, Image 1 -->
+    <td align="center" valign="top" width="33.3%">
+     <img width="100%" alt="Splash" src="https://github.com/user-attachments/assets/16966643-735e-4a44-8d95-f50f01310bae" /> <!-- Splash Screen -->
+      <br />
+      <sub><i>Splash Screen</i></sub>
+    </td>
+    <!-- Column 2, Image 1 -->
+    <td align="center" valign="top" width="33.3%">
+      <img width="100%" alt="Terrain" src="https://github.com/user-attachments/assets/662daba2-8773-482a-883d-6ca001199d6d" /> <!-- Terrain Map -->
+      <br />
+      <sub><i>Terrain Menu</i></sub>
+    </td>
+    <!-- Column 3, Image 1 -->
+    <td align="center" valign="top" width="33.3%">
+      <img width="100%" alt="Melodia Zoom" src="https://github.com/user-attachments/assets/4f45dbe9-a013-4779-b798-adb904243fe8" /> <!-- City Zoom view -->
+      <br />
+      <sub><i>Buildings Menu</i></sub>
+    </td>
+  </tr>
+  
+  <!-- ROW 2 -->
+  <tr>
+    <!-- Column 1, Image 2 -->
+    <td align="center" valign="top" width="33.3%">
+      <img width="100%" alt="Desirability" src="https://github.com/user-attachments/assets/5404719b-a0eb-49bf-abda-d1af08ffa265" /> <!-- Desirability Filter -->
+      <br />
+      <sub><i>Desirability Filter</i></sub>
+    </td>
+    <!-- Column 2, Image 2 -->
+    <td align="center" valign="top" width="33.3%">
+      <img width="100%" alt="Water" src="https://github.com/user-attachments/assets/98c72841-d8d1-43d5-8a9e-51530ac1900a" /> <!-- Water Coverage -->
+      <br />
+      <sub><i>Water Coverage Filter</i></sub>
+    </td>
+    <!-- Column 3, Image 2 -->
+    <td align="center" valign="top" width="33.3%">
+      <img width="100%" alt="Work Area" src="https://github.com/user-attachments/assets/81737b35-fb75-477a-972f-7900f7b1f858" /> <!-- Work Area Coverage -->
+      <br />
+      <sub><i>Work Area Filter</i></sub>
+    </td>
+  </tr>
+</table>
+
 
 ## Getting Started: Importing A Terrain Map from the Game
 Because this runs entirely in your browser, the app cannot automatically scrape your computer for save files. You'll need to locate your Fabledom .SAVEGAME folder and upload the file manually.
