@@ -2096,7 +2096,7 @@
         },
         town_well: {
           id: 'town_well', name: 'Town Well', short: 'TownWell', category: 'basic', milestone: 'Small Town',
-          w: 2, h: 2, rotatable: false, hasDoor: false,
+          w: 1, h: 1, rotatable: false, hasDoor: false,
           waterRadius: 7, desirabilityEmit: 10, desirabilityRadius: 5,
           color: '#2d8ab8', roofColor: '#4da8d6', icon: '⛲',
           desc: '2×2 Town Well. Supplies water within 7 tiles and +10 Desirability within 5 tiles.'
